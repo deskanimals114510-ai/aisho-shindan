@@ -670,7 +670,7 @@ async function downloadResultCard(mode) {
 
 // ===== アクセス解析(任意) =====
 // GA4の測定IDが決まったらここに設定してください(空文字の間は何も読み込みません、追加コストなし)
-const GA_MEASUREMENT_ID = '';
+const GA_MEASUREMENT_ID = 'G-WJX05F8Z8B';
 if (GA_MEASUREMENT_ID) {
   const gaScript = document.createElement('script');
   gaScript.async = true;
