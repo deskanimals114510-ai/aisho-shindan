@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>相性診断 | あなたとお相手の相性を診断</title>
+<meta name="description" content="性格・恋愛・仕事タイプ診断の結果コードから、あなたとお相手の相性を3カテゴリで診断。お相手のコードが無くても4問で推測できます。">
+
+<!-- OGP (Facebook/LINE等) -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="相性診断 | あなたとお相手の相性を診断">
+<meta property="og:description" content="性格・恋愛・仕事タイプ診断の結果コードから、あなたとお相手の相性を3カテゴリで診断。お相手のコードが無くても4問で推測できます。">
+<meta property="og:locale" content="ja_JP">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="相性診断">
+<meta name="twitter:description" content="性格・恋愛・仕事タイプ診断の結果コードから、あなたとお相手の相性を3カテゴリで診断。">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔮</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="bg-blobs" aria-hidden="true">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+  <div class="blob blob-4"></div>
+</div>
+<div class="sparkles" aria-hidden="true">
+  <span class="sparkle">✨</span>
+  <span class="sparkle">💗</span>
+  <span class="sparkle">🌸</span>
+  <span class="sparkle">⭐</span>
+  <span class="sparkle">💫</span>
+  <span class="sparkle">🎀</span>
+  <span class="sparkle">✨</span>
+  <span class="sparkle">💕</span>
+</div>
+
+<div id="app">
+
+  <!-- スタート画面: コード入力 -->
+  <section id="screen-start" class="screen active">
+    <div class="start-card">
+      <div class="start-emoji">🔮</div>
+      <span class="eyebrow">COMPATIBILITY TEST</span>
+      <h1>あなたと<span class="grad-text">お相手の相性</span>、診断します</h1>
+      <p class="lead">「性格・恋愛・仕事タイプ診断」の結果コードを使って、<br>2人の相性を3カテゴリで診断します。</p>
+      <div class="badges">
+        <span class="badge">✨ 性格</span>
+        <span class="badge">💌 恋愛</span>
+        <span class="badge">💼 仕事</span>
+        <span class="badge">の相性がわかります</span>
+      </div>
+
+      <form id="code-form" class="code-form">
+        <label for="input-me">あなたの結果コード</label>
+        <input id="input-me" class="code-input" type="text" placeholder="INFPESFJENTJ または 結果URL" autocomplete="off">
+        <p class="code-hint">まだ診断していない方は<a id="link-to-quiz" href="https://deskanimals114510-ai.github.io/personality-type-quiz/" target="_blank" rel="noopener">性格・恋愛・仕事タイプ診断</a>を先にどうぞ(無料・約3分)</p>
+
+        <label for="input-you">お相手の結果コード(お持ちなら)</label>
+        <input id="input-you" class="code-input" type="text" placeholder="ESTJINTJESFJ または 結果URL" autocomplete="off">
+        <p class="code-hint">お相手のコードが分からなくても大丈夫。次の画面で4つの質問に答えると、性格タイプだけ推測できます</p>
+
+        <p id="code-error" class="code-error">コードの形式が正しくないようです。結果URL全体を貼り付けてみてください。</p>
+
+        <button type="submit" class="btn-primary">相性を診断する 🔮</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- 推測クイズ画面(お相手のコードが無い場合) -->
+  <section id="screen-guess" class="screen">
+    <div class="guess-header">
+      <span class="eyebrow">4 QUESTIONS</span>
+      <h1>お相手について<br>教えてください</h1>
+      <p>直感で選んでOKです。すべて答えると診断に進みます。</p>
+    </div>
+    <div id="guess-questions"></div>
+  </section>
+
+  <!-- 結果画面 -->
+  <section id="screen-result" class="screen">
+    <div class="score-hero" id="score-hero"></div>
+    <div id="result-card-preview" class="result-card-preview"></div>
+    <p id="result-card-preview-hint" class="result-card-preview-hint">画像を長押し(スマホ)または右クリックで保存できます</p>
+    <div id="result-cards" class="result-cards"></div>
+    <div class="result-actions">
+      <button id="btn-share" class="btn-primary">結果をXでシェア 🚀</button>
+      <button id="btn-share-line" class="btn-secondary btn-line">LINEでシェア</button>
+      <button id="btn-copy-url" class="btn-secondary">結果URLをコピー 🔗</button>
+      <button id="btn-restart" class="btn-secondary">もう一度診断する</button>
+    </div>
+    <div class="result-actions result-actions-card">
+      <button id="btn-save-card" class="btn-secondary">結果カードを保存 🖼️</button>
+      <button id="btn-save-card-story" class="btn-secondary">ストーリーズ用に保存 📱</button>
+    </div>
+    <div class="follow-links">
+      <p class="follow-label">🐹 Desk Animalsをフォローする</p>
+      <div class="follow-btns">
+        <a class="follow-link" href="https://x.com/deskanimalslab" target="_blank" rel="noopener">X</a>
+        <a class="follow-link" href="https://www.instagram.com/desk.animals114510/" target="_blank" rel="noopener">Instagram</a>
+        <a class="follow-link" href="https://www.tiktok.com/@desk.animals" target="_blank" rel="noopener">TikTok</a>
+      </div>
+    </div>
+    <div class="follow-links">
+      <p class="follow-label">🔮 他の診断もチェックする</p>
+      <div class="follow-btns">
+        <a class="follow-link" href="https://deskanimals114510-ai.github.io/personality-type-quiz/" target="_blank" rel="noopener">性格・恋愛・仕事タイプ診断</a>
+        <a class="follow-link" href="https://deskanimals114510-ai.github.io/kokuyo-shindan/" target="_blank" rel="noopener">黒曜診断</a>
+      </div>
+    </div>
+  </section>
+
+  <footer id="site-footer" class="site-footer">
+    <p>本診断はエンタメ目的のコンテンツです。科学的な心理診断に代わるものではありません。</p>
+  </footer>
+
+</div>
+<script src="script.js"></script>
+</body>
+</html>
