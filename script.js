@@ -397,18 +397,22 @@ function copyResultUrl() {
   });
 }
 
-function shareResult() {
-  if (!lastResultData) return;
+function shareText() {
   const main = lastResultData.results.personality;
   const avgScore = Math.round(Object.values(lastResultData.results).reduce((s, r) => s + r.score, 0) / Object.keys(lastResultData.results).length);
-  const text = `相性診断やってみた!\n私とお相手は「${main.relation.name}」・相性${avgScore}点でした\n#相性診断 #MBTI診断`;
+  return `相性診断やってみた!\n私とお相手は「${main.relation.name}」・相性${avgScore}点でした\nお相手のコードがなくても4問で診断できるよ→\n#相性診断 #MBTI診断`;
+}
+function shareResult() {
+  if (!lastResultData) return;
+  const text = shareText();
   const url = encodeURIComponent(resultUrl());
   window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${url}`, '_blank', 'noopener,noreferrer');
 }
 function shareResultLine() {
   if (!lastResultData) return;
+  const text = shareText();
   const url = encodeURIComponent(resultUrl());
-  window.open(`https://social-plugins.line.me/lineit/share?url=${url}`, '_blank', 'noopener,noreferrer');
+  window.open(`https://social-plugins.line.me/lineit/share?url=${url}&text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
 }
 function restartQuiz() {
   document.getElementById('code-form').reset();
