@@ -304,12 +304,12 @@ function renderScoreHero(data) {
   hero.innerHTML = `
     <div class="vs-row">
       <div class="vs-person">
-        <img class="vs-avatar" src="img/animals/${data.myTypes.personality}.jpg" alt="">
+        <img class="vs-avatar" src="img/animals/thumb/${data.myTypes.personality}.jpg" alt="">
         <div class="vs-name">${TYPE_MAPS.personality[data.myTypes.personality][0]} あなた</div>
       </div>
       <div class="vs-mark">×</div>
       <div class="vs-person">
-        <img class="vs-avatar" src="img/animals/${data.otherTypes.personality}.jpg" alt="">
+        <img class="vs-avatar" src="img/animals/thumb/${data.otherTypes.personality}.jpg" alt="">
         <div class="vs-name">${TYPE_MAPS.personality[data.otherTypes.personality][0]} お相手${data.isGuess ? '(推測)' : ''}</div>
       </div>
     </div>
