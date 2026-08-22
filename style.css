@@ -398,7 +398,7 @@ body {
   font-size: 0.76rem;
   font-weight: 700;
   color: var(--accent);
-  margin-bottom: 4px;
+  margin: 0 0 4px;
 }
 .result-card .type-name {
   font-family: "Poppins", "Zen Maru Gothic", sans-serif;
@@ -608,6 +608,7 @@ body {
 /* ---- 相性診断: 質問画面(推測クイズ) ---- */
 #screen-guess { padding: 22px 20px 30px; }
 .guess-header { text-align: center; margin-bottom: 18px; }
+.guess-title { display: block; font-size: 2em; font-weight: bold; margin: 0.67em 0; }
 .guess-header p { color: var(--text-sub); font-size: 0.84rem; line-height: 1.6; }
 .guess-question {
   background: rgba(255,255,255,0.75);
