@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>黒曜診断 五行相性チェック | 相性診断</title>
+<meta name="description" content="黒曜診断の日主(生まれた日の干)から、あなたとお相手の五行の相性を無料でチェック。木・火・土・金・水、五行の相生相剋で相性を診断します。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="黒曜診断 五行相性チェック | 相性診断">
+<meta property="og:description" content="黒曜診断の日主(生まれた日の干)から、あなたとお相手の五行の相性を無料でチェック。木・火・土・金・水、五行の相生相剋で相性を診断します。">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:url" content="https://deskanimals114510-ai.github.io/aisho-shindan/gogyo.html">
+<link rel="canonical" href="https://deskanimals114510-ai.github.io/aisho-shindan/gogyo.html">
+<meta property="og:image" content="https://deskanimals114510-ai.github.io/aisho-shindan/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="黒曜診断 五行相性チェック | 相性診断">
+<meta name="twitter:description" content="黒曜診断の日主(生まれた日の干)から、あなたとお相手の五行の相性を無料でチェック。木・火・土・金・水、五行の相生相剋で相性を診断します。">
+<meta name="twitter:image" content="https://deskanimals114510-ai.github.io/aisho-shindan/og-image.jpg">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔮</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"黒曜診断 五行相性チェック","description":"黒曜診断の日主(生まれた日の干)から、あなたとお相手の五行の相性を無料でチェック。","url":"https://deskanimals114510-ai.github.io/aisho-shindan/gogyo.html","applicationCategory":"LifestyleApplication","inLanguage":"ja"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"相性診断","item":"https://deskanimals114510-ai.github.io/aisho-shindan/"},{"@type":"ListItem","position":2,"name":"五行相性チェック","item":"https://deskanimals114510-ai.github.io/aisho-shindan/gogyo.html"}]}</script>
+</head>
+<body>
+<div class="bg-blobs" aria-hidden="true">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+  <div class="blob blob-4"></div>
+</div>
+<div id="app">
+  <section class="screen active type-page">
+    <div class="result-header">
+      <span class="eyebrow">COMPATIBILITY GUIDE</span>
+      <h1 class="result-title">黒曜診断 <span class="grad-text">五行相性</span>チェック</h1>
+      <p class="type-page-sub">あなたとお相手の日主(生まれた日の干)を選ぶと、五行の相性を黒曜先生が占います。</p>
+    </div>
+
+    <div class="type-nav" style="margin-bottom:16px;">
+      <p class="type-nav-label">🔮 あなたの日主</p>
+      <div class="type-nav-grid" id="grid-me"></div>
+    </div>
+    <div class="type-nav" style="margin-bottom:16px;">
+      <p class="type-nav-label">🔮 お相手の日主</p>
+      <div class="type-nav-grid" id="grid-you"></div>
+    </div>
+
+    <div class="result-actions">
+      <button id="btn-check" class="btn-primary" disabled>五行相性を見る 🔮</button>
+    </div>
+
+    <div id="result-area" style="display:none;">
+      <div class="result-cards">
+        <div class="result-card type-page-card" id="result-card"></div>
+      </div>
+      <p class="type-page-note">これは五行(木・火・土・金・水)だけを見た簡易的な相性です。黒曜先生の詳しい鑑定は、生年月日そのものから占う黒曜診断でどうぞ。</p>
+    </div>
+
+    <div class="result-actions">
+      <a class="btn-secondary" href="https://deskanimals114510-ai.github.io/kokuyo-shindan/" target="_blank" rel="noopener" style="display:block;text-decoration:none;text-align:center;box-sizing:border-box;margin-bottom:8px;">黒曜診断がまだの方はこちら</a>
+      <a class="btn-secondary" href="index.html" style="display:block;text-decoration:none;text-align:center;box-sizing:border-box;">MBTI結果コードで相性を診断する</a>
+    </div>
+
+    <div class="follow-links">
+      <p class="follow-label">🐹 Desk Animalsをフォローする</p>
+      <div class="follow-btns">
+        <a class="follow-link" href="https://x.com/deskanimalslab" target="_blank" rel="noopener">X</a>
+        <a class="follow-link" href="https://www.instagram.com/desk.animals114510/" target="_blank" rel="noopener">Instagram</a>
+        <a class="follow-link" href="https://www.tiktok.com/@desk.animals" target="_blank" rel="noopener">TikTok</a>
+      </div>
+    </div>
+  </section>
+  <footer class="site-footer">
+    <p>本診断はエンタメ目的のコンテンツです。四柱推命の考え方をベースにしていますが、実際の鑑定に代わるものではありません。</p>
+  </footer>
+</div>
+
+<script>
+// 黒曜診断DAY_MASTER_TYPESと同じ並び順(index 0-9)
+const DAY_MASTERS = [
+  { emoji: '🌳', kanji: '甲', reading: 'きのえ', element: '木' },
+  { emoji: '🌱', kanji: '乙', reading: 'きのと', element: '木' },
+  { emoji: '☀️', kanji: '丙', reading: 'ひのえ', element: '火' },
+  { emoji: '🕯️', kanji: '丁', reading: 'ひのと', element: '火' },
+  { emoji: '⛰️', kanji: '戊', reading: 'つちのえ', element: '土' },
+  { emoji: '🌾', kanji: '己', reading: 'つちのと', element: '土' },
+  { emoji: '⚔️', kanji: '庚', reading: 'かのえ', element: '金' },
+  { emoji: '💍', kanji: '辛', reading: 'かのと', element: '金' },
+  { emoji: '🌊', kanji: '壬', reading: 'みずのえ', element: '水' },
+  { emoji: '💧', kanji: '癸', reading: 'みずのと', element: '水' },
+];
+const ELEMENT_ORDER = ['木', '火', '土', '金', '水'];
+const ELEMENT_EMOJI = { '木': '🌳', '火': '🔥', '土': '⛰️', '金': '⚔️', '水': '💧' };
+
+// 相生(生む)・相剋(剋す)の一言テキスト(黒曜先生の声、五行の組み合わせに応じて要素名を差し込む)
+function relationshipText(elA, elB, nameA, nameB) {
+  if (elA === elB) {
+    return {
+      label: '比和(似た者同士)',
+      body: `${nameA}も${nameB}も、同じ「${elA}」の気質よ。放っておいても分かり合える、楽な相性ね。ただし同じ気質は同じ弱点も分かち合うということ。二人でその弱点にはまり込まないよう、たまには真逆の意見をくれる誰かの声にも耳を傾けなさい。`,
+    };
+  }
+  const iA = ELEMENT_ORDER.indexOf(elA), iB = ELEMENT_ORDER.indexOf(elB);
+  if ((iA + 1) % 5 === iB) {
+    return {
+      label: `相生(${nameA}が${nameB}を育てる)`,
+      body: `${elA}の${nameA}が、${elB}の${nameB}を育てる。与え、与えられる、支え合う相性よ。ただし与えすぎれば${nameA}がすり減るし、${nameB}は受け取るだけでは自立できない。${nameA}は見返りを求めないこと、${nameB}は受け取った分をいつか誰かに返す番だと忘れないこと。それができれば、長く続く良縁になるわ。`,
+    };
+  }
+  if ((iB + 1) % 5 === iA) {
+    return {
+      label: `相生(${nameB}が${nameA}を育てる)`,
+      body: `${elB}の${nameB}が、${elA}の${nameA}を育てる。与え、与えられる、支え合う相性よ。ただし与えすぎれば${nameB}がすり減るし、${nameA}は受け取るだけでは自立できない。${nameB}は見返りを求めないこと、${nameA}は受け取った分をいつか誰かに返す番だと忘れないこと。それができれば、長く続く良縁になるわ。`,
+    };
+  }
+  if ((iA + 2) % 5 === iB) {
+    return {
+      label: `相剋(${nameA}が${nameB}を剋す)`,
+      body: `${elA}の${nameA}が、${elB}の${nameB}を突き崩す。楽な相性ではないけれど、刃は砥石があってこそ研がれるもの。適度な緊張感が、互いを鍛える関係になり得るわ。ただし加減を誤れば本当に傷つけ合うことになる。${nameA}は加減を、${nameB}は逃げ場を、それぞれ持っておきなさい。`,
+    };
+  }
+  // (iB + 2) % 5 === iA
+  return {
+    label: `相剋(${nameB}が${nameA}を剋す)`,
+    body: `${elB}の${nameB}が、${elA}の${nameA}を突き崩す。楽な相性ではないけれど、刃は砥石があってこそ研がれるもの。適度な緊張感が、互いを鍛える関係になり得るわ。ただし加減を誤れば本当に傷つけ合うことになる。${nameB}は加減を、${nameA}は逃げ場を、それぞれ持っておきなさい。`,
+  };
+}
+
+let selMe = null, selYou = null;
+
+function renderGrid(containerId, onSelect) {
+  const el = document.getElementById(containerId);
+  DAY_MASTERS.forEach((dm, i) => {
+    const btn = document.createElement('a');
+    btn.className = 'type-nav-link';
+    btn.href = '#';
+    btn.textContent = `${dm.emoji} ${dm.kanji}`;
+    btn.dataset.index = i;
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      [...el.children].forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      onSelect(i);
+    });
+    el.appendChild(btn);
+  });
+}
+
+function updateButton() {
+  document.getElementById('btn-check').disabled = !(selMe !== null && selYou !== null);
+}
+
+renderGrid('grid-me', (i) => { selMe = i; updateButton(); });
+renderGrid('grid-you', (i) => { selYou = i; updateButton(); });
+
+document.getElementById('btn-check').addEventListener('click', () => {
+  if (selMe === null || selYou === null) return;
+  const me = DAY_MASTERS[selMe], you = DAY_MASTERS[selYou];
+  const nameA = `${me.kanji}(${me.reading})`, nameB = `${you.kanji}(${you.reading})`;
+  const rel = relationshipText(me.element, you.element, nameA, nameB);
+  const card = document.getElementById('result-card');
+  card.innerHTML = `
+    <span class="cat-name">${ELEMENT_EMOJI[me.element]} ${me.emoji} ${nameA} × ${you.emoji} ${nameB} ${ELEMENT_EMOJI[you.element]}</span>
+    <div class="type-name">${rel.label}</div>
+    <p class="desc">${rel.body}</p>
+  `;
+  document.getElementById('result-area').style.display = '';
+  document.getElementById('result-area').scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+</script>
+</body>
+</html>
