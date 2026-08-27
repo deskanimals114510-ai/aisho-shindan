@@ -304,12 +304,12 @@ function renderScoreHero(data) {
   hero.innerHTML = `
     <div class="vs-row">
       <div class="vs-person">
-        <img class="vs-avatar" src="img/animals/thumb/${data.myTypes.personality}.jpg" alt="">
+        <img class="vs-avatar" src="img/animals/thumb/${data.myTypes.personality}.jpg" alt="" width="84" height="84">
         <div class="vs-name">${TYPE_MAPS.personality[data.myTypes.personality][0]} あなた</div>
       </div>
       <div class="vs-mark">×</div>
       <div class="vs-person">
-        <img class="vs-avatar" src="img/animals/thumb/${data.otherTypes.personality}.jpg" alt="">
+        <img class="vs-avatar" src="img/animals/thumb/${data.otherTypes.personality}.jpg" alt="" width="84" height="84">
         <div class="vs-name">${TYPE_MAPS.personality[data.otherTypes.personality][0]} お相手${data.isGuess ? '(推測)' : ''}</div>
       </div>
     </div>
@@ -635,6 +635,8 @@ async function renderCardPreview(data) {
     const img = document.createElement('img');
     img.src = canvas.toDataURL('image/png');
     img.alt = 'compatibility card preview';
+    img.width = canvas.width;
+    img.height = canvas.height;
     preview.appendChild(img);
   } catch (e) {
     console.error('結果カードプレビューの生成に失敗しました', e);
