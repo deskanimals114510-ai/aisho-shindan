@@ -870,3 +870,20 @@ body {
   color: var(--text-sub);
   line-height: 1.4;
 }
+
+.temperament-duo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin: 0 auto 14px;
+}
+.temperament-duo img {
+  border-radius: 14px;
+  box-shadow: 0 10px 24px rgba(120, 90, 130, 0.22);
+}
+.temperament-duo-x {
+  font-size: 1.4rem;
+  color: var(--text-sub);
+  font-weight: 700;
+}
