@@ -887,3 +887,10 @@ body {
   color: var(--text-sub);
   font-weight: 700;
 }
+
+.lang-note {
+  font-size: 0.75rem;
+  color: var(--text-sub);
+  font-style: italic;
+  margin: 6px 0 10px;
+}

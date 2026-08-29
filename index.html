@@ -58,11 +58,15 @@
   <!-- スタート画面: コード入力 -->
   <section id="screen-start" class="screen active">
     <div class="start-card">
+      <div class="lang-toggle">
+        <button id="btn-lang-ja" class="lang-btn active">日本語</button>
+        <button id="btn-lang-en" class="lang-btn">English</button>
+      </div>
       <div class="start-emoji">🔮</div>
-      <span class="eyebrow">COMPATIBILITY TEST</span>
-      <h1>あなたと<span class="grad-text">お相手の相性</span>、診断します</h1>
-      <p class="lead">「性格・恋愛・仕事タイプ診断」の結果コードを使って、<br>2人の相性を3カテゴリで診断します。</p>
-      <div class="badges">
+      <span id="start-eyebrow" class="eyebrow">COMPATIBILITY TEST</span>
+      <h1 id="start-title">あなたと<span class="grad-text">お相手の相性</span>、診断します</h1>
+      <p id="start-lead" class="lead">「性格・恋愛・仕事タイプ診断」の結果コードを使って、<br>2人の相性を3カテゴリで診断します。</p>
+      <div id="start-badges" class="badges">
         <span class="badge">✨ 性格</span>
         <span class="badge">💌 恋愛</span>
         <span class="badge">💼 仕事</span>
@@ -70,22 +74,22 @@
       </div>
 
       <a class="hub-link" href="pairs/">
-        <span>🔮 相性10パターンを先にチェックする</span>
+        <span id="hub-link-text">🔮 相性10パターンを先にチェックする</span>
         <span class="hub-link-arrow" aria-hidden="true">→</span>
       </a>
 
       <form id="code-form" class="code-form">
-        <label for="input-me">あなたの結果コード</label>
+        <label id="label-me" for="input-me">あなたの結果コード</label>
         <input id="input-me" class="code-input" type="text" placeholder="INFPESFJENTJ または 結果URL" autocomplete="off">
-        <p class="code-hint">まだ診断していない方は<a id="link-to-quiz" href="https://deskanimals114510-ai.github.io/personality-type-quiz/" target="_blank" rel="noopener">性格・恋愛・仕事タイプ診断</a>を先にどうぞ(無料・約3分)</p>
+        <p id="hint-me" class="code-hint">まだ診断していない方は<a id="link-to-quiz" href="https://deskanimals114510-ai.github.io/personality-type-quiz/" target="_blank" rel="noopener">性格・恋愛・仕事タイプ診断</a>を先にどうぞ(無料・約3分)</p>
 
-        <label for="input-you">お相手の結果コード(お持ちなら)</label>
+        <label id="label-you" for="input-you">お相手の結果コード(お持ちなら)</label>
         <input id="input-you" class="code-input" type="text" placeholder="ESTJINTJESFJ または 結果URL" autocomplete="off">
-        <p class="code-hint">お相手のコードが分からなくても大丈夫。次の画面で4つの質問に答えると、性格タイプだけ推測できます</p>
+        <p id="hint-you" class="code-hint">お相手のコードが分からなくても大丈夫。次の画面で4つの質問に答えると、性格タイプだけ推測できます</p>
 
         <p id="code-error" class="code-error">コードの形式が正しくないようです。結果URL全体を貼り付けてみてください。</p>
 
-        <button type="submit" class="btn-primary">相性を診断する 🔮</button>
+        <button id="btn-submit-code" type="submit" class="btn-primary">相性を診断する 🔮</button>
       </form>
     </div>
   </section>
@@ -93,9 +97,9 @@
   <!-- 推測クイズ画面(お相手のコードが無い場合) -->
   <section id="screen-guess" class="screen">
     <div class="guess-header">
-      <span class="eyebrow">4 QUESTIONS</span>
-      <div class="guess-title">お相手について<br>教えてください</div>
-      <p>直感で選んでOKです。すべて答えると診断に進みます。</p>
+      <span id="guess-eyebrow" class="eyebrow">4 QUESTIONS</span>
+      <div id="guess-title" class="guess-title">お相手について<br>教えてください</div>
+      <p id="guess-lead">直感で選んでOKです。すべて答えると診断に進みます。</p>
     </div>
     <div id="guess-questions"></div>
   </section>
@@ -117,7 +121,7 @@
       <button id="btn-save-card-story" class="btn-secondary">ストーリーズ用に保存 📱</button>
     </div>
     <div class="follow-links">
-      <p class="follow-label">🐹 Desk Animalsをフォローする</p>
+      <p id="follow-label-1" class="follow-label">🐹 Desk Animalsをフォローする</p>
       <div class="follow-btns">
         <a class="follow-link" href="https://x.com/deskanimalslab" target="_blank" rel="noopener">X</a>
         <a class="follow-link" href="https://www.instagram.com/desk.animals114510/" target="_blank" rel="noopener">Instagram</a>
@@ -125,7 +129,7 @@
       </div>
     </div>
     <div class="follow-links">
-      <p class="follow-label">🔮 気になる方はこちらもどうぞ</p>
+      <p id="follow-label-2" class="follow-label">🔮 気になる方はこちらもどうぞ</p>
       <div class="follow-btns">
         <a class="follow-link" href="https://deskanimals114510-ai.github.io/personality-type-quiz/" target="_blank" rel="noopener">性格・恋愛・仕事タイプ診断</a>
         <a class="follow-link" href="https://deskanimals114510-ai.github.io/kokuyo-shindan/" target="_blank" rel="noopener">黒曜診断</a>
@@ -134,7 +138,7 @@
   </section>
 
   <footer id="site-footer" class="site-footer">
-    <p>本診断はエンタメ目的のコンテンツです。科学的な心理診断に代わるものではありません。</p>
+    <p id="footer-disclaimer">本診断はエンタメ目的のコンテンツです。科学的な心理診断に代わるものではありません。</p>
     <p><a href="pairs/" style="color:var(--text-sub);">相性10パターン一覧を見る</a></p>
     <p><a href="gogyo.html" style="color:var(--text-sub);">黒曜診断の五行相性チェックはこちら</a></p>
   </footer>

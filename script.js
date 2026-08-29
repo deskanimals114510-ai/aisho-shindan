@@ -39,6 +39,169 @@ const CATEGORY_META = {
   work: { label: '仕事', icon: '💼', color: '#5bc8b5' },
 };
 
+// ===== EN版タイプ名(MBTI診断script.jsのANIMAL_MAP_EN/WEATHER_MAP_EN/VEHICLE_MAP_ENから
+// ニックネーム部分のみ抽出・流用。長文説明はこのサイトでは使わないため未使用) =====
+const TYPE_MAPS_EN = {
+  personality: {
+  ISTJ: ["🐢", "The Turtle Who Triple-Checks the Bridge"],
+  ISFJ: ["🐕", "The Golden Retriever Who's Already Got You Covered"],
+  INFJ: ["🦉", "The Owl Who Sees Right Through You"],
+  INTJ: ["🐺", "The Wolf Who's Already Won the Argument in Their Head"],
+  ISTP: ["🐱", "The Cat With the Mood-Dependent 'Go' Switch"],
+  ISFP: ["🐰", "The Rabbit Quietly Feeling Everything"],
+  INFP: ["🦌", "The Deer Who's Easily Hurt but Never Bends"],
+  INTP: ["🦝", "The Raccoon Who Suddenly Starts Talking Fast"],
+  ESTP: ["🐆", "The Cheetah Who Moves Before Thinking"],
+  ESFP: ["🐬", "The Dolphin Riding the Vibe of the Room"],
+  ENFP: ["🐶", "The Puppy Falling Down a New Rabbit Hole Today"],
+  ENTP: ["🦊", "The Fox Who Just Has to Play Devil's Advocate"],
+  ESTJ: ["🦁", "The Lion Born to Run the Show"],
+  ESFJ: ["🐕‍🦺", "The Golden Who Can Never Say No"],
+  ENFJ: ["🦢", "Everyone's Head Cheerleader, the Swan"],
+  ENTJ: ["🦅", "The Eagle Already Three Moves Ahead"],
+  },
+  love: {
+  ISTJ: ["☀️", "The Clear Sky That Never Clouds Over"],
+  ISFJ: ["🌤️", "The Sunbeam You Didn't Notice Warming You"],
+  INFJ: ["🌫️", "The Fog That's Hard to Pin Down"],
+  INTJ: ["🌀", "The Calm Eye of a Very Focused Storm"],
+  ISTP: ["🍃", "The Breeze That Slips Away If You Chase It"],
+  ISFP: ["🌦️", "The Soft Rain That Falls and Fades Quietly"],
+  INFP: ["🌇", "The Sunset That Makes You Want to Cry for No Reason"],
+  INTP: ["❄️", "The Frost That's a Little Cold to the Touch"],
+  ESTP: ["⛈️", "The Sudden Downpour That Comes When It Comes"],
+  ESFP: ["🏖️", "The Blue Summer Sky, Always in Top Form"],
+  ENFP: ["🌦️", "The Unpredictable Passing Shower"],
+  ENTP: ["🌬️", "The First Spring Wind That Changes the Whole Mood"],
+  ESTJ: ["☀️", "The Reliable Stretch of Clear Skies"],
+  ESFJ: ["🌳", "The Dappled Sunlight You Didn't Know You Needed"],
+  ENFJ: ["🌈", "The Rainbow Everyone Looks Up At"],
+  ENTJ: ["⛅", "The Towering Cloud That Owns the Whole Sky"],
+  },
+  work: {
+  ISTJ: ["🚃", "The Train That's Never a Minute Late"],
+  ISFJ: ["🚌", "The Local Bus Quietly Carrying Everyone"],
+  INFJ: ["⛵", "The Sailboat Steering Quietly Toward Its Goal"],
+  INTJ: ["🛥️", "The Submarine Moving Unseen Beneath the Surface"],
+  ISTP: ["🏍️", "The Motorcycle That Reads the Situation and Reacts"],
+  ISFP: ["🛶", "The Canoe That Never Breaks Its Own Pace"],
+  INFP: ["🎈", "The Hot-Air Balloon Riding the Wind of an Idea"],
+  INTP: ["🧪", "The Experimental Vehicle More Interested in the Engine Than the Destination"],
+  ESTP: ["🏎️", "The Sports Car with the Pedal Always Down"],
+  ESFP: ["🚗", "The Convertible Giving Everyone a Ride"],
+  ENFP: ["🪂", "The Glider Whose Destination Changes With the Wind"],
+  ENTP: ["🏁", "The Go-Kart That Wants to Talk Racing Lines"],
+  ESTJ: ["🚄", "The Bullet Train That Refuses to Run Late"],
+  ESFJ: ["🚙", "The Family Car Checking Everyone's Seatbelt"],
+  ENFJ: ["🚍", "The Tour Bus Guide Who Somehow Guides Everyone"],
+  ENTJ: ["🚢", "The Flagship Commanding the Whole Fleet"],
+  },
+};
+const CATEGORY_META_EN = {
+  personality: { label: 'Personality', icon: '✨', color: '#b892ff' },
+  love: { label: 'Love', icon: '💌', color: '#ff8fb3' },
+  work: { label: 'Career', icon: '💼', color: '#5bc8b5' },
+};
+let LANG = 'ja';
+function getTypeMaps() { return LANG === 'en' ? TYPE_MAPS_EN : TYPE_MAPS; }
+function getCategoryMeta() { return LANG === 'en' ? CATEGORY_META_EN : CATEGORY_META; }
+
+const UI_TEXT = {
+  ja: {
+    pageTitle: 'MBTI相性診断 | あなたとお相手の相性を診断',
+    pageDescription: '性格・恋愛・仕事タイプ診断の結果コードから、あなたとお相手の相性を3カテゴリで診断。お相手のコードが無くても4問で推測できます。',
+    eyebrowStart: 'COMPATIBILITY TEST',
+    titleHtml: 'あなたと<span class="grad-text">お相手の相性</span>、診断します',
+    lead: '「性格・恋愛・仕事タイプ診断」の結果コードを使って、<br>2人の相性を3カテゴリで診断します。',
+    badges: ['✨ 性格', '💌 恋愛', '💼 仕事', 'の相性がわかります'],
+    hubLink: '🔮 相性10パターンを先にチェックする',
+    labelMe: 'あなたの結果コード',
+    hintMe: 'まだ診断していない方は<a id="link-to-quiz" href="https://deskanimals114510-ai.github.io/personality-type-quiz/" target="_blank" rel="noopener">性格・恋愛・仕事タイプ診断</a>を先にどうぞ(無料・約3分)',
+    labelYou: 'お相手の結果コード(お持ちなら)',
+    hintYou: 'お相手のコードが分からなくても大丈夫。次の画面で4つの質問に答えると、性格タイプだけ推測できます',
+    codeError: 'コードの形式が正しくないようです。結果URL全体を貼り付けてみてください。',
+    submitBtn: '相性を診断する 🔮',
+    guessEyebrow: '4 QUESTIONS',
+    guessTitleHtml: 'お相手について<br>教えてください',
+    guessLead: '直感で選んでOKです。すべて答えると診断に進みます。',
+    youLabel: 'あなた',
+    otherLabel: 'お相手',
+    guessSuffix: '(推測)',
+    scoreSuffix: '点',
+    lockedText: (meta) => `${meta.icon} ${meta.label}の相性は、お相手が実際に診断すると分かります。<br>推測だけでは性格タイプ以外までは分かりません。`,
+    lockedCta: 'お相手を診断に誘う 🔮',
+    catNameSuffix: 'の相性',
+    scoreTierSep: '点・',
+    matchLabel: '一致',
+    diffLabel: '違い',
+    guessDisclaimer: '※お相手の性格タイプはあなたの回答からの推測です。お相手が実際に診断すると、より正確な相性が分かります。',
+    shareBtn: '結果をXでシェア 🚀',
+    lineBtn: 'LINEでシェア',
+    copyUrlBtn: '結果URLをコピー 🔗',
+    copiedLabel: 'コピーしました ✓',
+    restartBtn: 'もう一度診断する',
+    saveCardBtn: '結果カードを保存 🖼️',
+    saveCardStoryBtn: 'ストーリーズ用に保存 📱',
+    cardPreviewHint: '画像を長押し(スマホ)または右クリックで保存できます',
+    followLabel: '🐹 Desk Animalsをフォローする',
+    followLabel2: '🔮 気になる方はこちらもどうぞ',
+    footerDisclaimer: '本診断はエンタメ目的のコンテンツです。科学的な心理診断に代わるものではありません。',
+    shareText: (name, score) => `相性診断やってみた!\n私とお相手は「${name}」・相性${score}点でした\nお相手のコードがなくても4問で診断できるよ→\n#相性診断 #MBTI診断`,
+    cardEyebrow: '相性診断の結果',
+    cardCta: 'あなたとお相手の相性は? 無料診断',
+    cardCtaStoryLine1: 'あなたとお相手の相性は?',
+    cardCtaStoryLine2: '無料診断',
+    cardBrand: 'Desk Animals | 相性診断',
+  },
+  en: {
+    pageTitle: 'MBTI Compatibility Quiz | Check Your Match',
+    pageDescription: "Using your result code from the Personality/Love/Career Type Quiz, check your compatibility with someone across 3 categories. Don't have their code? Guess it with 4 quick questions.",
+    eyebrowStart: 'COMPATIBILITY TEST',
+    titleHtml: 'Find Out <span class="grad-text">Your Compatibility</span>',
+    lead: 'Using your result code from the Personality/Love/Career Type Quiz,<br>we\'ll check your compatibility across 3 categories.',
+    badges: ['✨ Personality', '💌 Love', '💼 Career', 'compatibility, revealed'],
+    hubLink: '🔮 Browse the 10 Compatibility Patterns First',
+    labelMe: 'Your Result Code',
+    hintMe: 'Haven\'t taken the quiz yet? Try the <a id="link-to-quiz" href="https://deskanimals114510-ai.github.io/personality-type-quiz/" target="_blank" rel="noopener">Personality/Love/Career Type Quiz</a> first (free, about 3 minutes)',
+    labelYou: "Their Result Code (if you have it)",
+    hintYou: "Don't know their code? No problem — answer 4 quick questions on the next screen and we'll guess their personality type",
+    codeError: "That code doesn't look quite right. Try pasting the whole result URL instead.",
+    submitBtn: 'Check Compatibility 🔮',
+    guessEyebrow: '4 QUESTIONS',
+    guessTitleHtml: 'Tell Us About<br>Your Match',
+    guessLead: "Go with your gut — once you've answered all 4, we'll show your results.",
+    youLabel: 'You',
+    otherLabel: 'Your Match',
+    guessSuffix: ' (Guessed)',
+    scoreSuffix: ' pts',
+    lockedText: (meta) => `${meta.icon} ${meta.label} compatibility unlocks once your match takes the real quiz.<br>Guessing alone can only tell us their personality type.`,
+    lockedCta: 'Invite Them to Take the Quiz 🔮',
+    catNameSuffix: ' Compatibility',
+    scoreTierSep: ' pts · ',
+    matchLabel: 'Match',
+    diffLabel: 'Different',
+    guessDisclaimer: "*Your match's personality type here is guessed from your answers. Have them take the real quiz for a more accurate compatibility read.",
+    shareBtn: 'Share on X 🚀',
+    lineBtn: 'Share on LINE',
+    copyUrlBtn: 'Copy Result URL 🔗',
+    copiedLabel: 'Copied ✓',
+    restartBtn: 'Take the Test Again',
+    saveCardBtn: 'Save Result Card 🖼️',
+    saveCardStoryBtn: 'Save for Stories 📱',
+    cardPreviewHint: 'Long-press (mobile) or right-click the image to save it',
+    followLabel: '🐹 Follow Desk Animals',
+    followLabel2: '🔮 You might also like',
+    footerDisclaimer: 'This test is for entertainment purposes only and is not a substitute for a scientific psychological assessment.',
+    shareText: (name, score) => `Just checked our compatibility!\nWe're a "${name}" — ${score}% match\nNo code from them? You can still guess it in 4 questions →\n#CompatibilityQuiz #MBTI`,
+    pendingTranslationNote: '🌐 English write-up for this pair is coming soon — shown in Japanese for now.',
+    cardEyebrow: 'Your Compatibility Result',
+    cardCta: 'Check Your Compatibility — Free Quiz',
+    cardCtaStoryLine1: 'Check Your Compatibility',
+    cardCtaStoryLine2: 'Free Quiz',
+    cardBrand: 'Desk Animals | Compatibility Quiz',
+  },
+};
+
 // ===== 気質グループ(16タイプ→4グループへ集約、関係性ニックネームの元データ) =====
 const TEMPERAMENT = {
   INTJ: 'NT', INTP: 'NT', ENTJ: 'NT', ENTP: 'NT',
@@ -118,10 +281,51 @@ const RELATIONSHIP_TABLE = {
     work: 'スピードと現場力なら右に出る者のいないコンビで、急なトラブルや立ち上げ期の混沌にはめっぽう強い二人です。その一方、長期計画や書類仕事、地道な継続管理はどちらも後回しにしがちで、瞬発力で乗り切るパターンが続くと息切れの心配も。短期決戦の突破力はこのペアの武器なので、苦手分野で消耗しない設計が鍵になります。管理系のタスクはツールや得意な人に思い切って任せてしまうと、強みに集中して成果を出せるかもしれません。',
   },
 };
+// EN翻訳(Fable執筆、2026-08-29〜。10組み合わせを1日5組ペースで順次追加中——
+// 未翻訳の組み合わせはgetRelationshipTable()がJA版に自動フォールバックする)。
+const RELATIONSHIP_TABLE_EN = {
+  NT_NT: {
+    name: "War Room Duo", hook: "An intellectual alliance that only deepens the longer you talk",
+    personality: "You're both the type whose conversations start with 'why?' — a rare pairing where an intellectual debate can happily run for hours. The flip side of being so evenly matched: neither of you likes conceding a point, and discussions can stall out in a stalemate. Even so, a partner who'll talk with you as a true equal without drifting into emotional appeals is a precious find, and you two can become the kind of comrades who sharpen each other's thinking. Every once in a while, skip the conclusion and ask 'so how did that make you feel?' — the conversation might go one level deeper.",
+    love: "Neither of you goes in for clinginess or mind games, so this becomes a refreshingly open romance where each other's time is genuinely respected. The catch: neither of you is great at putting affection into words, and before you know it you've settled into something more like comrades than lovers. Still, nobody understands better than you two how rare it is to find someone you can be completely honest with, as an equal. Try saying the thing logic can't explain — 'I love you because I love you' — even just once a month, and there's a good chance the temperature of the relationship warms right up.",
+    work: "Put you two on strategy and you're an unbeatable tag team — no other pair grasps the heart of a problem faster. But you share the same blind spot: you both love the big picture, so the unglamorous execution and fine-grained details tend to get shoved to later. Split roles by specialty rather than seniority, give each of you final say in your own domain, and the friction drops while your combined expertise multiplies. The one thing to lock in from day one is a system for deadlines and progress tracking — do that, and this machine might just run beautifully.",
+  },
+  NT_NF: {
+    name: "Future Architects Duo", hook: "Sketching the future together, with head and heart",
+    personality: "You're both intuitive types who light up over possibilities and the future rather than the facts on the table, and you can lose hours together to wonderfully abstract topics. Where you differ is the yardstick: the Strategist asks whether it holds up logically, while the Empath asks whether it sits right emotionally. When those two mesh, it's glorious — the luxury of examining a single idea from both the head side and the heart side. When opinions split, open with a simple 'I hadn't seen it from that angle' — acknowledging the other person's yardstick first could soften the whole conversation.",
+    love: "The Empath wants love confirmed out loud; the Strategist shows it through actions and quiet steadfastness. That temperature gap is this pairing's number-one source of crossed wires. And yet there's a real gravitational pull here — the Empath finds security in the Strategist's unshakable core, and the Strategist is quietly rescued by the Empath's warmth, each filling in what the other lacks. Strategist: even if it makes you cringe, put the feelings into words once a week. Empath: learn to read the love that never gets said aloud. Meet in the middle like that, and this could become the long, deep kind.",
+    work: "This is a pair that can align, passionately, on the 'what are we doing this for' vision. Your strengths divide cleanly: the Strategist designs the strategy and the systems, while the Empath moves people's hearts and brings them along. Decisions can split you — the Strategist trusting the data, the Empath weighing how the team feels — but a decision that passes both of those tests is a strong one, and people follow it naturally. When you're itching to object, try reflecting back the intent behind the other person's idea first; the discussion might actually move forward.",
+  },
+  NT_SJ: {
+    name: "Innovation and Bedrock Duo", hook: "The pair that turns fresh ideas into something solid",
+    personality: "You two can talk in facts rather than feelings, which means serious conversations actually work here. What differs is what you each lean on: the Strategist trusts the fresh logic of 'here's how we make it better,' while the Guardian trusts the track record of 'this is what's always worked.' Novelty-lover meets stability-seeker — and when it clicks, you get a relationship that's both innovative and rock-solid. Strategist: when you pitch a change, bring the reasoning and the steps as a set. Guardian: hear it out once before waving it off. That alone could change the whole atmosphere.",
+    love: "At the root, your values match: sincerity over flashy games. Where you diverge is everyday life — the Guardian treasures anniversaries and steady rituals, while the Strategist bristles at formality and wants room to breathe. The key is not misreading that gap as 'you don't love me enough.' The Guardian's steadiness becomes the place the Strategist comes home to, and the Strategist's perspective stretches the Guardian's world wider. Try keeping just one of the Guardian's treasured rituals together, and trust might deepen quietly, all on its own.",
+    work: "The Strategist designs the system, the Guardian runs it reliably — honestly, a better-matched working pair than you'd guess. The clashes always come at the same spot: change the precedent, or protect it? The Strategist sees the improvement; the Guardian sees the risk of sudden change. You're both arguing for the good of the organization, so if you can frame it as a difference in roles rather than a conflict, you're formidable. Agree on one ground rule — never change everything at once; test small and let the results decide — and your strengths might just click neatly into place.",
+  },
+  NT_SP: {
+    name: "Brains and Reflexes Duo", hook: "Thinker meets doer — one exhilarating tag team",
+    personality: "You both hate being fenced in, you're both rational, and the refreshingly unsentimental air between you feels good. The difference is how your engines start: the Strategist thinks first and then moves, while the Explorer moves first and thinks en route. The Explorer drags the overthinking, stalled-out Strategist into the open air; the Strategist steps back and keeps a level eye on the Explorer's full-speed charges. It's a genuinely good neutralizing act. Now and then, set your own style aside and ride the other person's pace for a whole day — you might stumble onto something unexpected.",
+    love: "Neither of you does heavy-handed possessiveness, so this romance gets plenty of fresh air. But your clocks point in different directions: the Strategist wants to sketch the blueprint for the future, while the Explorer wants to squeeze everything out of today. The Strategist can get anxious when the Explorer dodges the future talk; the Explorer can feel boxed in when every conversation is about someday. Still, the Explorer's momentum widens the Strategist's world, and the Strategist's deep thinking hands the Explorer a fresh perspective. Split your dates half-and-half — half future plans, half whatever that day brings — and you might find your balance.",
+    work: "The Strategist draws the blueprint, the Explorer turns it into reality on the spot — a pair with real velocity. You'll butt heads over process sometimes, the Strategist wanting to stick to the plan while the Explorer adapts to conditions on the fly, but the Explorer's ground-level instincts are priceless intel, exposing the holes no desk-bound plan can see. Strategist: set the frame and the goal, then hand over the details. Explorer: when you change something, share the why in one line. Nail that division of labor, and you could become a team with both precision and lightning reflexes.",
+  },
+  NF_NF: {
+    name: "Telepathy Duo", hook: "It's already understood before anyone says a word",
+    personality: "You two pick up on feelings that never get said out loud — a connection built on deep, mutual empathy. It's the rare relationship where simply being together feels like being understood. But being so alike has its trapdoors: you can both be so considerate that you swallow your real feelings, or exhaust yourselves reading too much into each other's moods. Even so, only this pair can be a true safe harbor — the place where showing weakness is finally okay. Try going first: confess just one thing you've been too polite to say, and the relationship might get a whole notch easier to breathe in.",
+    love: "You're both romantics who crave a deep connection of the heart, and together you can genuinely grow the ideal love you've each imagined. The trouble is that expectations climb high, and when 'they should just understand' misses the mark, the small misfire cuts deeper than it would for most. Precisely because you're both so good at reading each other, the secret to lasting is not leaning too hard on being read. Make a pact early on — say what you need instead of enduring in silence — and your sensitivity stops being a weakness and becomes the depth of the bond itself.",
+    work: "You both care whether the work actually means something, and when it comes to team morale and lifting people up, no duo does it better. The flip side: managing the numbers, making the hard calls, delivering feedback that stings — you'd both rather not, and all that kindness can occasionally curdle into stagnation. Building a place where people feel safe enough to grow is this pair's real treasure; your only assignment is not to leave the weak spots unattended. Appoint a keeper of numbers and deadlines — rotating weekly is fine — and you might just get warmth and results in the same package.",
+  },
+};
+function getRelationshipTable() {
+  return LANG === 'en' ? RELATIONSHIP_TABLE_EN : RELATIONSHIP_TABLE;
+}
 function relationshipFor(myType, otherType) {
   const g1 = TEMPERAMENT[myType] || 'SJ';
   const g2 = TEMPERAMENT[otherType] || 'SJ';
-  return RELATIONSHIP_TABLE[pairKey(g1, g2)];
+  const key = pairKey(g1, g2);
+  const table = getRelationshipTable();
+  if (table[key]) return table[key];
+  // EN未翻訳の組み合わせはJA版にフォールバックしつつ、翻訳待ちであることを明示するフラグを立てる
+  return { ...RELATIONSHIP_TABLE[key], isPendingTranslation: LANG === 'en' };
 }
 
 // ===== スコアリング =====
@@ -151,6 +355,13 @@ function axisBreakdown(myType, otherType) {
   });
 }
 function scoreTier(score) {
+  if (LANG === 'en') {
+    if (score >= 95) return 'Soulmate-Level Match';
+    if (score >= 91) return 'Excellent Match';
+    if (score >= 87) return 'In Sync';
+    if (score >= 83) return 'Finding Your Groove';
+    return 'Opposites Worth Exploring';
+  }
   if (score >= 95) return '運命的な相棒';
   if (score >= 91) return 'かなり良い相棒';
   if (score >= 87) return '息の合う相性';
@@ -183,6 +394,13 @@ const GUESS_QUESTIONS = [
   { axis: 'TF', text: '相談すると、その人はまず…', a: { letter: 'T', text: '論理的に整理してくれる' }, b: { letter: 'F', text: '気持ちに寄り添ってくれる' } },
   { axis: 'JP', text: '約束や予定に対して、その人は…', a: { letter: 'J', text: '早めにきっちり決めたがる' }, b: { letter: 'P', text: '直前まで決めない・柔軟な方' } },
 ];
+const GUESS_QUESTIONS_EN = [
+  { axis: 'EI', text: 'In a big group, are they more the type who…', a: { letter: 'E', text: 'Jumps right into the center of things' }, b: { letter: 'I', text: 'Ends up quietly talking with one person off to the side' } },
+  { axis: 'SN', text: 'When you talk, they tend to bring up more…', a: { letter: 'S', text: 'Concrete facts and real experiences' }, b: { letter: 'N', text: 'Abstract ideas and possibilities' } },
+  { axis: 'TF', text: 'When you go to them for advice, they usually…', a: { letter: 'T', text: 'Break it down logically first' }, b: { letter: 'F', text: 'Meet your feelings first' } },
+  { axis: 'JP', text: 'When it comes to plans and commitments, they…', a: { letter: 'J', text: 'Like to lock things in early' }, b: { letter: 'P', text: 'Keep it flexible until the last minute' } },
+];
+function getGuessQuestions() { return LANG === 'en' ? GUESS_QUESTIONS_EN : GUESS_QUESTIONS; }
 
 // ===== 状態・DOM =====
 const screens = {
@@ -236,11 +454,12 @@ function startGuessQuiz() {
   state.guessAnswers = {};
   const wrap = document.getElementById('guess-questions');
   wrap.innerHTML = '';
-  GUESS_QUESTIONS.forEach((q, qi) => {
+  const questions = getGuessQuestions();
+  questions.forEach((q, qi) => {
     const box = document.createElement('div');
     box.className = 'guess-question';
     box.innerHTML = `
-      <div class="q-num">Q${qi + 1} / ${GUESS_QUESTIONS.length}</div>
+      <div class="q-num">Q${qi + 1} / ${questions.length}</div>
       <div class="q-text">${q.text}</div>
       <div class="guess-options">
         <button type="button" class="option-btn" data-axis="${q.axis}" data-letter="${q.a.letter}">${q.a.text}</button>
@@ -254,7 +473,7 @@ function startGuessQuiz() {
       const axis = btn.dataset.axis;
       state.guessAnswers[axis] = btn.dataset.letter;
       wrap.querySelectorAll(`.option-btn[data-axis="${axis}"]`).forEach(b => b.classList.toggle('selected', b === btn));
-      if (Object.keys(state.guessAnswers).length === GUESS_QUESTIONS.length) {
+      if (Object.keys(state.guessAnswers).length === questions.length) {
         setTimeout(() => {
           state.guessedPersonality = AXIS_ORDER.map(a => state.guessAnswers[a]).join('');
           showResult();
@@ -298,6 +517,8 @@ function showResult() {
 }
 
 function renderScoreHero(data) {
+  const t = UI_TEXT[LANG];
+  const typeMaps = getTypeMaps();
   const hero = document.getElementById('score-hero');
   const main = data.results.personality;
   const avgScore = Object.values(data.results).reduce((s, r) => s + r.score, 0) / Object.keys(data.results).length;
@@ -305,27 +526,30 @@ function renderScoreHero(data) {
     <div class="vs-row">
       <div class="vs-person">
         <img class="vs-avatar" src="img/animals/thumb/${data.myTypes.personality}.jpg" alt="" width="84" height="84">
-        <div class="vs-name">${TYPE_MAPS.personality[data.myTypes.personality][0]} あなた</div>
+        <div class="vs-name">${typeMaps.personality[data.myTypes.personality][0]} ${t.youLabel}</div>
       </div>
       <div class="vs-mark">×</div>
       <div class="vs-person">
         <img class="vs-avatar" src="img/animals/thumb/${data.otherTypes.personality}.jpg" alt="" width="84" height="84">
-        <div class="vs-name">${TYPE_MAPS.personality[data.otherTypes.personality][0]} お相手${data.isGuess ? '(推測)' : ''}</div>
+        <div class="vs-name">${typeMaps.personality[data.otherTypes.personality][0]} ${t.otherLabel}${data.isGuess ? t.guessSuffix : ''}</div>
       </div>
     </div>
     <div class="relation-name">${main.relation.name}</div>
-    <div><span class="score-num">${Math.round(avgScore)}</span><span class="score-suffix">点</span></div>
+    <div><span class="score-num">${Math.round(avgScore)}</span><span class="score-suffix">${t.scoreSuffix}</span></div>
     <div class="score-tier">${scoreTier(avgScore)}</div>
     <p class="score-hook">${main.relation.hook}</p>
   `;
 }
 
 function renderResultCards(data) {
+  const t = UI_TEXT[LANG];
+  const typeMaps = getTypeMaps();
+  const categoryMeta = getCategoryMeta();
   const wrap = document.getElementById('result-cards');
   wrap.innerHTML = '';
 
   ['personality', 'love', 'work'].forEach((cat, i) => {
-    const meta = CATEGORY_META[cat];
+    const meta = categoryMeta[cat];
     const r = data.results[cat];
 
     if (!r) {
@@ -333,23 +557,23 @@ function renderResultCards(data) {
       locked.className = 'locked-card';
       locked.innerHTML = `
         <div class="lock-emoji">🔒</div>
-        <p>${meta.icon} ${meta.label}の相性は、お相手が実際に診断すると分かります。<br>推測だけでは性格タイプ以外までは分かりません。</p>
-        <a class="btn-secondary" href="https://deskanimals114510-ai.github.io/personality-type-quiz/" target="_blank" rel="noopener" style="display:inline-block;text-decoration:none;">お相手を診断に誘う 🔮</a>
+        <p>${t.lockedText(meta)}</p>
+        <a class="btn-secondary" href="https://deskanimals114510-ai.github.io/personality-type-quiz/" target="_blank" rel="noopener" style="display:inline-block;text-decoration:none;">${t.lockedCta}</a>
       `;
       wrap.appendChild(locked);
       return;
     }
 
-    const myInfo = TYPE_MAPS[cat][r.myCode];
-    const otherInfo = TYPE_MAPS[cat][r.otherCode];
+    const myInfo = typeMaps[cat][r.myCode];
+    const otherInfo = typeMaps[cat][r.otherCode];
     const card = document.createElement('div');
     card.className = 'result-card';
     card.style.setProperty('--accent', meta.color);
     card.style.animationDelay = `${i * 0.12}s`;
     card.innerHTML = `
-      <div class="cat-name">${meta.icon} ${meta.label}の相性</div>
+      <div class="cat-name">${meta.icon} ${meta.label}${t.catNameSuffix}</div>
       <div class="type-name">${r.relation.name}</div>
-      <div class="cat-score"><span class="num">${r.score}</span><span class="tier">点・${r.tier}</span></div>
+      <div class="cat-score"><span class="num">${r.score}</span><span class="tier">${t.scoreTierSep}${r.tier}</span></div>
       <div class="vs-row" style="margin:14px 0;">
         <div class="vs-person">
           <div style="font-size:1.6rem;">${myInfo[0]}</div>
@@ -361,9 +585,10 @@ function renderResultCards(data) {
           <div class="vs-name">${otherInfo[1]}</div>
         </div>
       </div>
+      ${r.relation.isPendingTranslation ? `<p class="lang-note" style="display:block;">${t.pendingTranslationNote}</p>` : ''}
       <div class="desc">${r.relation[cat]}</div>
       <div class="axis-chips">
-        ${r.breakdown.map(b => `<span class="axis-chip ${b.same ? 'match' : ''}">${b.label} ${b.same ? '一致' : '違い'}</span>`).join('')}
+        ${r.breakdown.map(b => `<span class="axis-chip ${b.same ? 'match' : ''}">${b.label} ${b.same ? t.matchLabel : t.diffLabel}</span>`).join('')}
       </div>
     `;
     wrap.appendChild(card);
@@ -372,7 +597,7 @@ function renderResultCards(data) {
   if (data.isGuess) {
     const note = document.createElement('p');
     note.className = 'guess-disclaimer';
-    note.textContent = '※お相手の性格タイプはあなたの回答からの推測です。お相手が実際に診断すると、より正確な相性が分かります。';
+    note.textContent = t.guessDisclaimer;
     wrap.appendChild(note);
   }
 }
@@ -389,18 +614,20 @@ function resultUrl() {
 
 function copyResultUrl() {
   if (!lastResultData) return;
+  const t = UI_TEXT[LANG];
   const btn = document.getElementById('btn-copy-url');
   navigator.clipboard.writeText(resultUrl()).then(() => {
     const original = btn.textContent;
-    btn.textContent = 'コピーしました ✓';
+    btn.textContent = t.copiedLabel;
     setTimeout(() => { btn.textContent = original; }, 2000);
   });
 }
 
 function shareText() {
+  const t = UI_TEXT[LANG];
   const main = lastResultData.results.personality;
   const avgScore = Math.round(Object.values(lastResultData.results).reduce((s, r) => s + r.score, 0) / Object.keys(lastResultData.results).length);
-  return `相性診断やってみた!\n私とお相手は「${main.relation.name}」・相性${avgScore}点でした\nお相手のコードがなくても4問で診断できるよ→\n#相性診断 #MBTI診断`;
+  return t.shareText(main.relation.name, avgScore);
 }
 function shareResult() {
   if (!lastResultData) return;
@@ -485,6 +712,7 @@ function loadCardImage(src) {
 }
 
 function drawCompatCardX(ctx, imgMe, imgYou, data) {
+  const t = UI_TEXT[LANG];
   const W = 1200, H = 630;
   cardDrawBackground(ctx, W, H);
 
@@ -510,7 +738,7 @@ function drawCompatCardX(ctx, imgMe, imgYou, data) {
   ctx.textBaseline = 'middle'; ctx.textAlign = 'left';
   ctx.fillStyle = CARD_PAL.sub;
   ctx.font = "700 24px 'Zen Maru Gothic', sans-serif";
-  ctx.fillText('相性診断の結果', cx, 70);
+  ctx.fillText(t.cardEyebrow, cx, 70);
 
   const main = data.results.personality;
   const avgScore = Math.round(Object.values(data.results).reduce((s, r) => s + r.score, 0) / Object.keys(data.results).length);
@@ -529,7 +757,7 @@ function drawCompatCardX(ctx, imgMe, imgYou, data) {
   const numWidth = ctx.measureText(`${avgScore}`).width;
   ctx.font = "700 22px 'Zen Maru Gothic', sans-serif";
   ctx.fillStyle = CARD_PAL.sub;
-  ctx.fillText('点', cx + numWidth + 8, y + 24);
+  ctx.fillText(t.scoreSuffix, cx + numWidth + 8, y + 24);
   y += 60;
 
   ctx.font = "700 22px 'Zen Maru Gothic', sans-serif";
@@ -542,13 +770,14 @@ function drawCompatCardX(ctx, imgMe, imgYou, data) {
 
   ctx.fillStyle = CARD_PAL.primaryDark;
   ctx.font = "700 25px 'Zen Maru Gothic', sans-serif";
-  ctx.fillText('あなたとお相手の相性は? 無料診断', cx, y + 44);
+  ctx.fillText(t.cardCta, cx, y + 44);
   ctx.fillStyle = CARD_PAL.sub;
   ctx.font = "600 18px Poppins, sans-serif";
-  ctx.fillText('Desk Animals | 相性診断', cx, y + 78);
+  ctx.fillText(t.cardBrand, cx, y + 78);
 }
 
 function drawCompatCardStory(ctx, imgMe, imgYou, data) {
+  const t = UI_TEXT[LANG];
   const W = 1080, H = 1920;
   cardDrawBackground(ctx, W, H);
 
@@ -574,7 +803,7 @@ function drawCompatCardStory(ctx, imgMe, imgYou, data) {
   let y = 1030;
   ctx.fillStyle = CARD_PAL.sub;
   ctx.font = "700 30px 'Zen Maru Gothic', sans-serif";
-  ctx.fillText('相性診断の結果', W / 2, y);
+  ctx.fillText(t.cardEyebrow, W / 2, y);
   y += 70;
 
   const nameFit = cardFitTextMultiline(ctx, main.relation.name, W - 160, '900', "'Zen Maru Gothic', sans-serif", 56, 36, 2);
@@ -587,7 +816,7 @@ function drawCompatCardStory(ctx, imgMe, imgYou, data) {
   const grad = ctx.createLinearGradient(W / 2 - 100, 0, W / 2 + 100, 0);
   grad.addColorStop(0, '#ff8fb3'); grad.addColorStop(1, '#b892ff');
   ctx.fillStyle = grad;
-  ctx.fillText(`${avgScore}点`, W / 2, y);
+  ctx.fillText(`${avgScore}${t.scoreSuffix}`, W / 2, y);
   y += 80;
 
   ctx.font = "700 30px 'Zen Maru Gothic', sans-serif";
@@ -599,12 +828,12 @@ function drawCompatCardStory(ctx, imgMe, imgYou, data) {
   ctx.beginPath(); ctx.moveTo(150, y); ctx.lineTo(930, y); ctx.stroke();
   ctx.fillStyle = CARD_PAL.primaryDark;
   ctx.font = "700 40px 'Zen Maru Gothic', sans-serif";
-  ctx.fillText('あなたとお相手の相性は?', W / 2, y + 65);
+  ctx.fillText(t.cardCtaStoryLine1, W / 2, y + 65);
   ctx.font = "700 30px 'Zen Maru Gothic', sans-serif";
-  ctx.fillText('無料診断', W / 2, y + 120);
+  ctx.fillText(t.cardCtaStoryLine2, W / 2, y + 120);
   ctx.fillStyle = CARD_PAL.sub;
   ctx.font = "600 24px Poppins, sans-serif";
-  ctx.fillText('Desk Animals | 相性診断', W / 2, y + 175);
+  ctx.fillText(t.cardBrand, W / 2, y + 175);
   ctx.textAlign = 'left';
 }
 
@@ -698,6 +927,53 @@ document.getElementById('btn-copy-url').addEventListener('click', copyResultUrl)
 document.getElementById('btn-restart').addEventListener('click', restartQuiz);
 document.getElementById('btn-save-card').addEventListener('click', () => downloadResultCard('x'));
 document.getElementById('btn-save-card-story').addEventListener('click', () => downloadResultCard('story'));
+
+// ===== JA/EN切替(2026-08-29、10組み合わせを1日5組ペースでFable翻訳中。
+// 未翻訳分はgetRelationshipTable()がJA版へ自動フォールバックする) =====
+function applyLangUI() {
+  const t = UI_TEXT[LANG];
+  document.title = t.pageTitle;
+  const metaDescEl = document.querySelector('meta[name="description"]');
+  if (metaDescEl) metaDescEl.setAttribute('content', t.pageDescription);
+  document.getElementById('start-eyebrow').textContent = t.eyebrowStart;
+  document.getElementById('start-title').innerHTML = t.titleHtml;
+  document.getElementById('start-lead').innerHTML = t.lead;
+  document.getElementById('start-badges').innerHTML = t.badges.map(b => `<span class="badge">${b}</span>`).join('');
+  document.getElementById('hub-link-text').textContent = t.hubLink;
+  document.getElementById('label-me').textContent = t.labelMe;
+  document.getElementById('hint-me').innerHTML = t.hintMe;
+  document.getElementById('label-you').textContent = t.labelYou;
+  document.getElementById('hint-you').textContent = t.hintYou;
+  document.getElementById('code-error').textContent = t.codeError;
+  document.getElementById('btn-submit-code').textContent = t.submitBtn;
+  document.getElementById('guess-eyebrow').textContent = t.guessEyebrow;
+  document.getElementById('guess-title').innerHTML = t.guessTitleHtml;
+  document.getElementById('guess-lead').textContent = t.guessLead;
+  document.getElementById('btn-share').textContent = t.shareBtn;
+  document.getElementById('btn-share-line').textContent = t.lineBtn;
+  document.getElementById('btn-copy-url').textContent = t.copyUrlBtn;
+  document.getElementById('btn-restart').textContent = t.restartBtn;
+  document.getElementById('btn-save-card').textContent = t.saveCardBtn;
+  document.getElementById('btn-save-card-story').textContent = t.saveCardStoryBtn;
+  document.getElementById('result-card-preview-hint').textContent = t.cardPreviewHint;
+  document.getElementById('follow-label-1').textContent = t.followLabel;
+  document.getElementById('follow-label-2').textContent = t.followLabel2;
+  document.getElementById('footer-disclaimer').textContent = t.footerDisclaimer;
+  document.documentElement.lang = LANG;
+  // 結果画面が既に表示中なら、言語切替後の再描画も行う
+  if (lastResultData) {
+    renderScoreHero(lastResultData);
+    renderResultCards(lastResultData);
+  }
+}
+function setLang(lang) {
+  LANG = lang;
+  document.getElementById('btn-lang-ja').classList.toggle('active', lang === 'ja');
+  document.getElementById('btn-lang-en').classList.toggle('active', lang === 'en');
+  applyLangUI();
+}
+document.getElementById('btn-lang-ja').addEventListener('click', () => setLang('ja'));
+document.getElementById('btn-lang-en').addEventListener('click', () => setLang('en'));
 
 // ===== 起動時: URLパラメータ復元(共有リンク経由のアクセス) =====
 // 関数・状態の宣言が全て済んだ後に実行する必要がある(lastResultData等の let 宣言より前で
