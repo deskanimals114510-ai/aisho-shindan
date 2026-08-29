@@ -497,17 +497,26 @@ function computeCategoryResult(category, myCode, otherCode) {
   };
 }
 
-function showResult() {
-  const myTypes = decodeTriple(state.me);
-  const isGuess = !state.you;
-  const otherTypes = state.you ? decodeTriple(state.you) : { personality: state.guessedPersonality, love: null, work: null };
-
+// relationshipFor()・scoreTier()はどちらもモジュール変数LANGを見て言語別のテキストを返すため、
+// 一度computeCategoryResult()した結果(lastResultData.results)は特定言語の値を抱えたまま固定される。
+// 言語切替後にrenderだけ呼び直しても古い言語の相性文章が残ってしまうバグを防ぐため、
+// showResult()と「言語切替時の再計算」の両方からこの関数を呼ぶ形に共通化する。
+function computeResults(myTypes, otherTypes, isGuess) {
   const results = {};
   results.personality = computeCategoryResult('personality', myTypes.personality, otherTypes.personality);
   if (!isGuess) {
     results.love = computeCategoryResult('love', myTypes.love, otherTypes.love);
     results.work = computeCategoryResult('work', myTypes.work, otherTypes.work);
   }
+  return results;
+}
+
+function showResult() {
+  const myTypes = decodeTriple(state.me);
+  const isGuess = !state.you;
+  const otherTypes = state.you ? decodeTriple(state.you) : { personality: state.guessedPersonality, love: null, work: null };
+
+  const results = computeResults(myTypes, otherTypes, isGuess);
 
   lastResultData = { myTypes, otherTypes, isGuess, results };
   renderScoreHero(lastResultData);
@@ -960,10 +969,13 @@ function applyLangUI() {
   document.getElementById('follow-label-2').textContent = t.followLabel2;
   document.getElementById('footer-disclaimer').textContent = t.footerDisclaimer;
   document.documentElement.lang = LANG;
-  // 結果画面が既に表示中なら、言語切替後の再描画も行う
+  // 結果画面が既に表示中なら、結果(relation/tier等、言語依存の値)を再計算してから再描画する。
+  // render関数を呼び直すだけだとlastResultData.resultsに古い言語の相性文章が残ったままになる。
   if (lastResultData) {
+    lastResultData.results = computeResults(lastResultData.myTypes, lastResultData.otherTypes, lastResultData.isGuess);
     renderScoreHero(lastResultData);
     renderResultCards(lastResultData);
+    renderCardPreview(lastResultData);
   }
 }
 function setLang(lang) {
