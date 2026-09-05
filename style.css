@@ -223,6 +223,13 @@ body {
 }
 .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(255, 143, 179, 0.55); }
 .btn-primary:active { transform: translateY(0); }
+.btn-primary:disabled {
+  background: var(--border);
+  color: var(--text-sub);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+.btn-primary:disabled:hover { transform: none; box-shadow: none; }
 
 .btn-secondary {
   background: rgba(255,255,255,0.6);

@@ -116,8 +116,10 @@ const UI_TEXT = {
     badges: ['✨ 性格', '💌 恋愛', '💼 仕事', 'の相性がわかります'],
     hubLink: '🔮 相性10パターンを先にチェックする',
     labelMe: 'あなたの結果コード',
+    placeholderMe: 'INFPESFJENTJ または結果URL',
     hintMe: 'まだ診断していない方は<a id="link-to-quiz" href="https://deskanimals114510-ai.github.io/personality-type-quiz/" target="_blank" rel="noopener">性格・恋愛・仕事タイプ診断</a>を先にどうぞ(無料・約3分)',
     labelYou: 'お相手の結果コード(お持ちなら)',
+    placeholderYou: 'ESTJINTJESFJ または結果URL',
     hintYou: 'お相手のコードが分からなくても大丈夫。次の画面で4つの質問に答えると、性格タイプだけ推測できます',
     codeError: 'コードの形式が正しくないようです。結果URL全体を貼り付けてみてください。',
     submitBtn: '相性を診断する 🔮',
@@ -162,8 +164,10 @@ const UI_TEXT = {
     badges: ['✨ Personality', '💌 Love', '💼 Career', 'compatibility, revealed'],
     hubLink: '🔮 Browse the 10 Compatibility Patterns First',
     labelMe: 'Your Result Code',
+    placeholderMe: 'INFPESFJENTJ or result URL',
     hintMe: 'Haven\'t taken the quiz yet? Try the <a id="link-to-quiz" href="https://deskanimals114510-ai.github.io/personality-type-quiz/" target="_blank" rel="noopener">Personality/Love/Career Type Quiz</a> first (free, about 3 minutes)',
     labelYou: "Their Result Code (if you have it)",
+    placeholderYou: 'ESTJINTJESFJ or result URL',
     hintYou: "Don't know their code? No problem — answer 4 quick questions on the next screen and we'll guess their personality type",
     codeError: "That code doesn't look quite right. Try pasting the whole result URL instead.",
     submitBtn: 'Check Compatibility 🔮',
@@ -480,6 +484,7 @@ document.getElementById('code-form').addEventListener('submit', (e) => {
 
 // ===== 推測クイズ =====
 function startGuessQuiz() {
+  trackEvent('guess_quiz_start');
   state.guessAnswers = {};
   const wrap = document.getElementById('guess-questions');
   wrap.innerHTML = '';
@@ -645,9 +650,9 @@ function resultUrl() {
   if (!lastResultData) return location.href;
   const base = `${location.origin}${location.pathname}?me=${lastResultData.myTypes ? state.me : ''}`;
   if (lastResultData.isGuess) {
-    return `${base}&you=${lastResultData.otherTypes.personality}&guess=1`;
+    return `${base}&you=${lastResultData.otherTypes.personality}&guess=1&lang=${LANG}`;
   }
-  return `${base}&you=${state.you}`;
+  return `${base}&you=${state.you}&lang=${LANG}`;
 }
 
 function copyResultUrl() {
@@ -659,6 +664,7 @@ function copyResultUrl() {
     btn.textContent = t.copiedLabel;
     setTimeout(() => { btn.textContent = original; }, 2000);
   });
+  trackEvent('share', { method: 'copy_url' });
 }
 
 function shareText() {
@@ -672,12 +678,14 @@ function shareResult() {
   const text = shareText();
   const url = encodeURIComponent(resultUrl());
   window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${url}`, '_blank', 'noopener,noreferrer');
+  trackEvent('share', { method: 'x' });
 }
 function shareResultLine() {
   if (!lastResultData) return;
   const text = shareText();
   const url = encodeURIComponent(resultUrl());
   window.open(`https://social-plugins.line.me/lineit/share?url=${url}&text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
+  trackEvent('share', { method: 'line' });
 }
 function restartQuiz() {
   document.getElementById('code-form').reset();
@@ -933,6 +941,7 @@ async function downloadResultCard(mode) {
         resolve();
       }, 'image/png');
     });
+    trackEvent('save_card', { mode });
   } catch (e) {
     console.error('結果カード生成に失敗しました', e);
   } finally {
@@ -958,6 +967,11 @@ if (GA_MEASUREMENT_ID && !isLocalDev) {
   gtag('config', GA_MEASUREMENT_ID);
 }
 
+// 効果測定用のカスタムイベント送信(gtag未読み込み時は何もしない、計測失敗が機能を止めないよう安全に呼ぶ)
+function trackEvent(name, params) {
+  if (typeof gtag === 'function') gtag('event', name, params || {});
+}
+
 // ===== イベント =====
 document.getElementById('btn-share').addEventListener('click', shareResult);
 document.getElementById('btn-share-line').addEventListener('click', shareResultLine);
@@ -979,8 +993,10 @@ function applyLangUI() {
   document.getElementById('start-badges').innerHTML = t.badges.map(b => `<span class="badge">${b}</span>`).join('');
   document.getElementById('hub-link-text').textContent = t.hubLink;
   document.getElementById('label-me').textContent = t.labelMe;
+  document.getElementById('input-me').setAttribute('placeholder', t.placeholderMe);
   document.getElementById('hint-me').innerHTML = t.hintMe;
   document.getElementById('label-you').textContent = t.labelYou;
+  document.getElementById('input-you').setAttribute('placeholder', t.placeholderYou);
   document.getElementById('hint-you').textContent = t.hintYou;
   document.getElementById('code-error').textContent = t.codeError;
   document.getElementById('btn-submit-code').textContent = t.submitBtn;
@@ -1012,6 +1028,7 @@ function setLang(lang) {
   document.getElementById('btn-lang-ja').classList.toggle('active', lang === 'ja');
   document.getElementById('btn-lang-en').classList.toggle('active', lang === 'en');
   applyLangUI();
+  trackEvent('lang_switch', { lang });
 }
 document.getElementById('btn-lang-ja').addEventListener('click', () => setLang('ja'));
 document.getElementById('btn-lang-en').addEventListener('click', () => setLang('en'));
@@ -1024,6 +1041,8 @@ document.getElementById('btn-lang-en').addEventListener('click', () => setLang('
   const meParam = params.get('me');
   const youParam = params.get('you');
   const guessParam = params.get('guess');
+  const langParam = params.get('lang');
+  if (langParam === 'en' || langParam === 'ja') setLang(langParam);
   if (meParam) document.getElementById('input-me').value = meParam;
   if (youParam) document.getElementById('input-you').value = youParam;
 
