@@ -9,7 +9,7 @@
   --accent3: #ffcf7a;
   --mint: #7ed9c9;
   --text: #55404f;
-  --text-sub: #a3899e;
+  --text-sub: #7d5c72; /* 2026-09-05: WCAG AA対応で#a3899eから濃色化(白背景比5.76:1、最も暗い背景グラデ比でも4.92:1) */
   --border: #ffe3ee;
   --shadow-soft: 0 10px 30px rgba(220, 130, 170, 0.16);
   --shadow-lift: 0 16px 40px rgba(220, 130, 170, 0.24);
@@ -78,6 +78,19 @@ body {
   50%      { opacity: 0.85; transform: translateY(-6px) scale(1.05) rotate(12deg); }
 }
 
+@keyframes skeleton-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ---- モーション低減設定への対応(2026-09-05追加、MBTI診断・黒曜診断と同様のガード) ---- */
+@media (prefers-reduced-motion: reduce) {
+  .blob, .sparkle { animation: none; }
+  .bubble { animation: none; }
+  .result-card { animation: none; opacity: 1; }
+  .vs-avatar, .result-card-preview { animation: none; }
+}
+
 #app {
   position: relative;
   z-index: 1;
@@ -135,6 +148,10 @@ body {
   font-size: 0.74rem;
   font-weight: 700;
   padding: 5px 14px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 999px;
   border: 1.5px solid var(--border);
   background: #fff;
@@ -487,7 +504,11 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.4);
+  /* ---- 読込中スケルトン(2026-09-05追加)。canvasのプレビュー生成が完了しimgが挿入されるまでの
+     空白期間に、読込破綻ではなく「読込中」と伝わるシマーを表示する ---- */
+  background: linear-gradient(100deg, rgba(255,143,179,0.12) 30%, rgba(184,146,255,0.18) 50%, rgba(255,143,179,0.12) 70%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.6s ease-in-out infinite;
 }
 .result-card-preview img {
   display: block;
@@ -511,6 +532,16 @@ body {
   font-size: 0.88rem;
   padding: 11px 22px;
   opacity: 0.9;
+}
+/* ---- CTA群の視覚的分離(2026-09-05、シェア系→保存系→やり直しの順に優先度を分けて配置) ---- */
+.result-actions-restart {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px dashed var(--border);
+}
+.result-actions-restart .btn-secondary {
+  font-size: 0.86rem;
+  opacity: 0.85;
 }
 
 .btn-line {
@@ -544,6 +575,10 @@ body {
   background: #fff;
   border: 1.5px solid var(--border);
   padding: 6px 16px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 999px;
   text-decoration: none;
 }
@@ -727,6 +762,11 @@ body {
   border: 3px solid #fff;
   box-shadow: 0 6px 18px rgba(120,90,130,0.25);
   margin-bottom: 8px;
+  /* ---- 読込中スケルトン(2026-09-05追加、黒曜診断shugorei-hero-imgと同じ方式。
+     画像が読み込まれると不透明なJPGが全面を覆うので、下地のシマーは自然に隠れる) ---- */
+  background: linear-gradient(100deg, rgba(255,143,179,0.14) 30%, rgba(184,146,255,0.22) 50%, rgba(255,143,179,0.14) 70%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.6s ease-in-out infinite;
 }
 .vs-name { font-size: 0.78rem; font-weight: 700; line-height: 1.4; }
 .vs-mark {
@@ -894,10 +934,75 @@ body {
   color: var(--text-sub);
   font-weight: 700;
 }
+/* ---- 一覧カード内の小サイズ版(pairs/index.html、2026-09-05追加) ---- */
+.type-hub-card .temperament-duo {
+  margin: 0 0 8px;
+  gap: 4px;
+}
+.type-hub-card .temperament-duo-x {
+  font-size: 1rem;
+}
 
 .lang-note {
   font-size: 0.75rem;
   color: var(--text-sub);
   font-style: italic;
   margin: 6px 0 10px;
+}
+
+/* ---- キーボードフォーカス視認性(2026-09-05追加、黒曜診断・MBTI診断と同様のfocus-visible定義) ---- */
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+.lang-btn:focus-visible,
+.hub-link:focus-visible,
+.follow-link:focus-visible,
+.type-hub-card:focus-visible,
+.type-nav-link:focus-visible,
+.option-btn:focus-visible,
+.code-input:focus-visible,
+.lucky-item:focus-visible,
+.breadcrumb-nav a:focus-visible {
+  outline: 2px solid var(--primary-dark);
+  outline-offset: 2px;
+}
+
+/* ---- パンくずナビ(2026-09-05追加、pairs配下の詳細ページ用。JSON-LDのBreadcrumbListと対になる可視ナビ) ---- */
+.breadcrumb-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  color: var(--text-sub);
+  margin: 0 0 14px;
+  line-height: 1.6;
+}
+.breadcrumb-nav a {
+  color: var(--text-sub);
+  text-decoration: none;
+}
+.breadcrumb-nav a:hover {
+  color: var(--primary-dark);
+  text-decoration: underline;
+}
+.breadcrumb-nav .crumb-current {
+  color: var(--text);
+  font-weight: 700;
+}
+.breadcrumb-nav .crumb-sep {
+  color: var(--text-sub);
+  opacity: 0.6;
+}
+
+/* ---- 招待CTAの無料バッジ(2026-09-05追加) ---- */
+.lock-free-badge {
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+/* ---- pairs配下ページの英語向け注記(2026-09-05追加、日本語専用ページであることを明示) ---- */
+.en-only-note {
+  font-size: 0.74rem;
+  color: var(--text-sub);
+  font-style: italic;
 }

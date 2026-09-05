@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>黒曜診断 五行相性チェック | 相性診断</title>
-<meta name="description" content="黒曜診断の日主(生まれた日の干)から、あなたとお相手の五行の相性を無料でチェック。木・火・土・金・水、五行の相生相剋で相性を診断します。">
+<title id="page-title">黒曜診断 五行相性チェック | 相性診断</title>
+<meta id="meta-description" name="description" content="黒曜診断の日主(生まれた日の干)から、あなたとお相手の五行の相性を無料でチェック。木・火・土・金・水、五行の相生相剋で相性を診断します。">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.google-analytics.com; base-uri 'self'; form-action 'self';">
 <meta property="og:type" content="website">
-<meta property="og:title" content="黒曜診断 五行相性チェック | 相性診断">
-<meta property="og:description" content="黒曜診断の日主(生まれた日の干)から、あなたとお相手の五行の相性を無料でチェック。木・火・土・金・水、五行の相生相剋で相性を診断します。">
+<meta id="og-title" property="og:title" content="黒曜診断 五行相性チェック | 相性診断">
+<meta id="og-description" property="og:description" content="黒曜診断の日主(生まれた日の干)から、あなたとお相手の五行の相性を無料でチェック。木・火・土・金・水、五行の相生相剋で相性を診断します。">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:url" content="https://deskanimals114510-ai.github.io/aisho-shindan/gogyo.html">
 <link rel="canonical" href="https://deskanimals114510-ai.github.io/aisho-shindan/gogyo.html">
@@ -16,8 +16,8 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="黒曜診断 五行相性チェック | 相性診断">
-<meta name="twitter:description" content="黒曜診断の日主(生まれた日の干)から、あなたとお相手の五行の相性を無料でチェック。木・火・土・金・水、五行の相生相剋で相性を診断します。">
+<meta id="twitter-title" name="twitter:title" content="黒曜診断 五行相性チェック | 相性診断">
+<meta id="twitter-description" name="twitter:description" content="黒曜診断の日主(生まれた日の干)から、あなたとお相手の五行の相性を無料でチェック。木・火・土・金・水、五行の相生相剋で相性を診断します。">
 <meta name="twitter:image" content="https://deskanimals114510-ai.github.io/aisho-shindan/og-image.jpg">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔮</text></svg>">
 <link rel="icon" href="favicon.ico" sizes="32x32">
@@ -41,17 +41,21 @@
 <div id="app">
   <section class="screen active type-page">
     <div class="result-header">
-      <span class="eyebrow">COMPATIBILITY GUIDE</span>
-      <h1 class="result-title">黒曜診断 <span class="grad-text">五行相性</span>チェック</h1>
-      <p class="type-page-sub">あなたとお相手の日主(生まれた日の干)を選ぶと、五行の相性を黒曜先生が占います。</p>
+      <div class="lang-toggle">
+        <button id="btn-lang-ja" class="lang-btn active">日本語</button>
+        <button id="btn-lang-en" class="lang-btn">English</button>
+      </div>
+      <span id="eyebrow" class="eyebrow">COMPATIBILITY GUIDE</span>
+      <h1 id="page-h1" class="result-title">黒曜診断 <span class="grad-text">五行相性</span>チェック</h1>
+      <p id="page-lead" class="type-page-sub">あなたとお相手の日主(生まれた日の干)を選ぶと、五行の相性を黒曜先生が占います。</p>
     </div>
 
     <div class="type-nav" style="margin-bottom:16px;">
-      <p class="type-nav-label">🔮 あなたの日主</p>
+      <p id="label-grid-me" class="type-nav-label">🔮 あなたの日主</p>
       <div class="type-nav-grid" id="grid-me"></div>
     </div>
     <div class="type-nav" style="margin-bottom:16px;">
-      <p class="type-nav-label">🔮 お相手の日主</p>
+      <p id="label-grid-you" class="type-nav-label">🔮 お相手の日主</p>
       <div class="type-nav-grid" id="grid-you"></div>
     </div>
 
@@ -63,16 +67,16 @@
       <div class="result-cards">
         <div class="result-card type-page-card" id="result-card"></div>
       </div>
-      <p class="type-page-note">これは五行(木・火・土・金・水)だけを見た簡易的な相性です。黒曜先生の詳しい鑑定は、生年月日そのものから占う黒曜診断でどうぞ。</p>
+      <p id="result-note" class="type-page-note">これは五行(木・火・土・金・水)だけを見た簡易的な相性です。黒曜先生の詳しい鑑定は、生年月日そのものから占う黒曜診断でどうぞ。</p>
     </div>
 
     <div class="result-actions">
-      <a class="btn-secondary" href="https://deskanimals114510-ai.github.io/kokuyo-shindan/" target="_blank" rel="noopener" style="display:block;text-decoration:none;text-align:center;box-sizing:border-box;margin-bottom:8px;">黒曜診断がまだの方はこちら</a>
-      <a class="btn-secondary" href="index.html" style="display:block;text-decoration:none;text-align:center;box-sizing:border-box;">MBTI結果コードで相性を診断する</a>
+      <a id="link-kokuyo" class="btn-secondary" href="https://deskanimals114510-ai.github.io/kokuyo-shindan/" target="_blank" rel="noopener" style="display:block;text-decoration:none;text-align:center;box-sizing:border-box;margin-bottom:8px;">黒曜診断がまだの方はこちら</a>
+      <a id="link-mbti" class="btn-secondary" href="index.html" style="display:block;text-decoration:none;text-align:center;box-sizing:border-box;">MBTI結果コードで相性を診断する</a>
     </div>
 
     <div class="follow-links">
-      <p class="follow-label">🐹 Desk Animalsをフォローする</p>
+      <p id="follow-label" class="follow-label">🐹 Desk Animalsをフォローする</p>
       <div class="follow-btns">
         <a class="follow-link" href="https://x.com/deskanimalslab" target="_blank" rel="noopener">X</a>
         <a class="follow-link" href="https://www.instagram.com/desk.animals114510/" target="_blank" rel="noopener">Instagram</a>
@@ -81,7 +85,7 @@
     </div>
   </section>
   <footer class="site-footer">
-    <p>本診断はエンタメ目的のコンテンツです。四柱推命の考え方をベースにしていますが、実際の鑑定に代わるものではありません。</p>
+    <p id="footer-disclaimer">本診断はエンタメ目的のコンテンツです。四柱推命の考え方をベースにしていますが、実際の鑑定に代わるものではありません。</p>
   </footer>
 </div>
 
@@ -101,6 +105,61 @@ const DAY_MASTERS = [
 ];
 const ELEMENT_ORDER = ['木', '火', '土', '金', '水'];
 const ELEMENT_EMOJI = { '木': '🌳', '火': '🔥', '土': '⛰️', '金': '⚔️', '水': '💧' };
+
+// EN版: 黒曜診断day-master-types-en.jsで確立済みのローマ字表記(Kinoe/Kinoto等)を流用し、
+// 姉妹サイトと表記を統一する(2026-09-05、EN対応追加時に新設)。
+const DAY_MASTERS_EN = [
+  { emoji: '🌳', name: 'Kinoe', element: 'Wood' },
+  { emoji: '🌱', name: 'Kinoto', element: 'Wood' },
+  { emoji: '☀️', name: 'Hinoe', element: 'Fire' },
+  { emoji: '🕯️', name: 'Hinoto', element: 'Fire' },
+  { emoji: '⛰️', name: 'Tsuchinoe', element: 'Earth' },
+  { emoji: '🌾', name: 'Tsuchinoto', element: 'Earth' },
+  { emoji: '⚔️', name: 'Kanoe', element: 'Metal' },
+  { emoji: '💍', name: 'Kanoto', element: 'Metal' },
+  { emoji: '🌊', name: 'Mizunoe', element: 'Water' },
+  { emoji: '💧', name: 'Mizunoto', element: 'Water' },
+];
+const ELEMENT_ORDER_EN = ['Wood', 'Fire', 'Earth', 'Metal', 'Water'];
+const ELEMENT_EMOJI_EN = { Wood: '🌳', Fire: '🔥', Earth: '⛰️', Metal: '⚔️', Water: '💧' };
+
+let LANG = 'ja';
+function getDayMasters() { return LANG === 'en' ? DAY_MASTERS_EN : DAY_MASTERS; }
+function getElementOrder() { return LANG === 'en' ? ELEMENT_ORDER_EN : ELEMENT_ORDER; }
+function getElementEmoji() { return LANG === 'en' ? ELEMENT_EMOJI_EN : ELEMENT_EMOJI; }
+
+const UI_TEXT = {
+  ja: {
+    pageTitle: '黒曜診断 五行相性チェック | 相性診断',
+    pageDescription: '黒曜診断の日主(生まれた日の干)から、あなたとお相手の五行の相性を無料でチェック。木・火・土・金・水、五行の相生相剋で相性を診断します。',
+    eyebrow: 'COMPATIBILITY GUIDE',
+    h1Html: '黒曜診断 <span class="grad-text">五行相性</span>チェック',
+    lead: 'あなたとお相手の日主(生まれた日の干)を選ぶと、五行の相性を黒曜先生が占います。',
+    labelMe: '🔮 あなたの日主',
+    labelYou: '🔮 お相手の日主',
+    checkBtn: '五行相性を見る 🔮',
+    resultNote: 'これは五行(木・火・土・金・水)だけを見た簡易的な相性です。黒曜先生の詳しい鑑定は、生年月日そのものから占う黒曜診断でどうぞ。',
+    linkKokuyo: '黒曜診断がまだの方はこちら',
+    linkMbti: 'MBTI結果コードで相性を診断する',
+    followLabel: '🐹 Desk Animalsをフォローする',
+    footerDisclaimer: '本診断はエンタメ目的のコンテンツです。四柱推命の考え方をベースにしていますが、実際の鑑定に代わるものではありません。',
+  },
+  en: {
+    pageTitle: 'Kokuyo Five-Element Compatibility Check | Compatibility Quiz',
+    pageDescription: "Pick your day master (the heavenly stem of the day you were born) from Kokuyo Fortune, and free-check your five-element compatibility with someone. Sensei Kokuyo reads the generating and controlling cycles of Wood, Fire, Earth, Metal, and Water.",
+    eyebrow: 'COMPATIBILITY GUIDE',
+    h1Html: 'Kokuyo <span class="grad-text">Five-Element</span> Compatibility Check',
+    lead: "Choose your and your match's day master (the heavenly stem of the day you were born), and Sensei Kokuyo will read your five-element compatibility.",
+    labelMe: '🔮 Your Day Master',
+    labelYou: "🔮 Their Day Master",
+    checkBtn: 'Check Compatibility 🔮',
+    resultNote: "This is a simplified reading based on the five elements (Wood, Fire, Earth, Metal, Water) alone. For a full reading straight from your actual birth date, try Sensei Kokuyo's full fortune quiz.",
+    linkKokuyo: "Haven't tried Kokuyo Fortune yet? Start here",
+    linkMbti: 'Check MBTI Compatibility With a Result Code',
+    followLabel: '🐹 Follow Desk Animals',
+    footerDisclaimer: 'This test is for entertainment purposes only. It is based on Four Pillars of Destiny concepts but is not a substitute for an actual professional reading.',
+  },
+};
 
 // 相生(生む)・相剋(剋す)の一言テキスト(黒曜先生の声、五行の組み合わせに応じて要素名を差し込む)
 function relationshipText(elA, elB, nameA, nameB) {
@@ -136,15 +195,63 @@ function relationshipText(elA, elB, nameA, nameB) {
   };
 }
 
+// EN版(Fable(claude-fable-5)による書き起こし、2026-09-05。黒曜先生の口調(厳しいが愛のある占い師)を
+// 姉妹サイト黒曜診断のday-master-types-en.jsの既存EN文体を基準に踏襲。5パターン全て翻訳済み)。
+function relationshipTextEN(elA, elB, nameA, nameB) {
+  if (elA === elB) {
+    return {
+      label: 'Kindred Spirits (two of a kind)',
+      body: `${nameA} and ${nameB} — you carry the same ${elA} nature. Leave the two of you alone and you'll understand each other without a word. An easy match. But hear this: the same nature means the same weak spots, too. Don't let the pair of you sink into that hollow together — every so often, lend an ear to someone who thinks the exact opposite of you both.`,
+    };
+  }
+  const iA = ELEMENT_ORDER_EN.indexOf(elA), iB = ELEMENT_ORDER_EN.indexOf(elB);
+  if ((iA + 1) % 5 === iB) {
+    return {
+      label: `Nurturing Bond (${nameA} nurtures ${nameB})`,
+      body: `${nameA} of ${elA} nurtures ${nameB} of ${elB}. One gives, one receives, and together you hold each other up — a fine bond. But give too much and ${nameA} wears thin; take and only take, and ${nameB} never learns to stand alone. ${nameA}, give without counting what comes back. ${nameB}, never forget that what you've received, you'll one day owe to someone else. Manage that, and this is a tie that lasts.`,
+    };
+  }
+  if ((iB + 1) % 5 === iA) {
+    return {
+      label: `Nurturing Bond (${nameB} nurtures ${nameA})`,
+      body: `${nameB} of ${elB} nurtures ${nameA} of ${elA}. One gives, one receives, and together you hold each other up — a fine bond. But give too much and ${nameB} wears thin; take and only take, and ${nameA} never learns to stand alone. ${nameB}, give without counting what comes back. ${nameA}, never forget that what you've received, you'll one day owe to someone else. Manage that, and this is a tie that lasts.`,
+    };
+  }
+  if ((iA + 2) % 5 === iB) {
+    return {
+      label: `Blade and Whetstone (${nameA} tempers ${nameB})`,
+      body: `${nameA} of ${elA} cuts into ${nameB} of ${elB}. Not an easy match — I won't pretend otherwise. But a blade is only sharpened against a whetstone. The right measure of friction can be exactly what forges the two of you. Misjudge it, though, and you will truly wound each other. So ${nameA}, keep your restraint. ${nameB}, keep somewhere to retreat. Hold onto those — each of you.`,
+    };
+  }
+  // (iB + 2) % 5 === iA
+  return {
+    label: `Blade and Whetstone (${nameB} tempers ${nameA})`,
+    body: `${nameB} of ${elB} cuts into ${nameA} of ${elA}. Not an easy match — I won't pretend otherwise. But a blade is only sharpened against a whetstone. The right measure of friction can be exactly what forges the two of you. Misjudge it, though, and you will truly wound each other. So ${nameB}, keep your restraint. ${nameA}, keep somewhere to retreat. Hold onto those — each of you.`,
+  };
+}
+function getRelationshipText(elA, elB, nameA, nameB) {
+  return LANG === 'en' ? relationshipTextEN(elA, elB, nameA, nameB) : relationshipText(elA, elB, nameA, nameB);
+}
+
 let selMe = null, selYou = null;
 
-function renderGrid(containerId, onSelect) {
+function dmLabel(dm) {
+  return LANG === 'en' ? `${dm.emoji} ${dm.name}` : `${dm.emoji} ${dm.kanji}`;
+}
+function dmName(dm) {
+  return LANG === 'en' ? dm.name : `${dm.kanji}(${dm.reading})`;
+}
+
+function renderGrid(containerId, onSelect, getSelected) {
   const el = document.getElementById(containerId);
-  DAY_MASTERS.forEach((dm, i) => {
+  el.innerHTML = '';
+  const dayMasters = getDayMasters();
+  dayMasters.forEach((dm, i) => {
     const btn = document.createElement('a');
     btn.className = 'type-nav-link';
     btn.href = '#';
-    btn.textContent = `${dm.emoji} ${dm.kanji}`;
+    btn.textContent = dmLabel(dm);
+    if (getSelected() === i) btn.classList.add('active');
     btn.dataset.index = i;
     btn.addEventListener('click', (e) => {
       e.preventDefault();
@@ -156,27 +263,74 @@ function renderGrid(containerId, onSelect) {
   });
 }
 
+function renderGrids() {
+  renderGrid('grid-me', (i) => { selMe = i; updateButton(); }, () => selMe);
+  renderGrid('grid-you', (i) => { selYou = i; updateButton(); }, () => selYou);
+}
+
 function updateButton() {
   document.getElementById('btn-check').disabled = !(selMe !== null && selYou !== null);
 }
 
-renderGrid('grid-me', (i) => { selMe = i; updateButton(); });
-renderGrid('grid-you', (i) => { selYou = i; updateButton(); });
+renderGrids();
 
-document.getElementById('btn-check').addEventListener('click', () => {
-  if (selMe === null || selYou === null) return;
-  const me = DAY_MASTERS[selMe], you = DAY_MASTERS[selYou];
-  const nameA = `${me.kanji}(${me.reading})`, nameB = `${you.kanji}(${you.reading})`;
-  const rel = relationshipText(me.element, you.element, nameA, nameB);
+function renderResultCard(scroll) {
+  const dayMasters = getDayMasters();
+  const me = dayMasters[selMe], you = dayMasters[selYou];
+  const nameA = dmName(me), nameB = dmName(you);
+  const emojiMap = getElementEmoji();
+  const rel = getRelationshipText(me.element, you.element, nameA, nameB);
   const card = document.getElementById('result-card');
   card.innerHTML = `
-    <span class="cat-name">${ELEMENT_EMOJI[me.element]} ${me.emoji} ${nameA} × ${you.emoji} ${nameB} ${ELEMENT_EMOJI[you.element]}</span>
+    <span class="cat-name">${emojiMap[me.element]} ${me.emoji} ${nameA} × ${you.emoji} ${nameB} ${emojiMap[you.element]}</span>
     <div class="type-name">${rel.label}</div>
     <p class="desc">${rel.body}</p>
   `;
   document.getElementById('result-area').style.display = '';
-  document.getElementById('result-area').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (scroll) document.getElementById('result-area').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+document.getElementById('btn-check').addEventListener('click', () => {
+  if (selMe === null || selYou === null) return;
+  renderResultCard(true);
 });
+
+// ===== JA/EN切替(index.htmlと同じlang-toggleパターン、2026-09-05追加) =====
+function applyLangUI() {
+  const t = UI_TEXT[LANG];
+  document.title = t.pageTitle;
+  document.getElementById('page-title').textContent = t.pageTitle;
+  document.getElementById('meta-description').setAttribute('content', t.pageDescription);
+  document.getElementById('og-title').setAttribute('content', t.pageTitle);
+  document.getElementById('og-description').setAttribute('content', t.pageDescription);
+  document.getElementById('twitter-title').setAttribute('content', t.pageTitle);
+  document.getElementById('twitter-description').setAttribute('content', t.pageDescription);
+  document.getElementById('eyebrow').textContent = t.eyebrow;
+  document.getElementById('page-h1').innerHTML = t.h1Html;
+  document.getElementById('page-lead').textContent = t.lead;
+  document.getElementById('label-grid-me').textContent = t.labelMe;
+  document.getElementById('label-grid-you').textContent = t.labelYou;
+  document.getElementById('btn-check').textContent = t.checkBtn;
+  document.getElementById('link-kokuyo').textContent = t.linkKokuyo;
+  document.getElementById('link-mbti').textContent = t.linkMbti;
+  document.getElementById('follow-label').textContent = t.followLabel;
+  document.getElementById('footer-disclaimer').textContent = t.footerDisclaimer;
+  document.documentElement.lang = LANG;
+  document.getElementById('result-note').textContent = t.resultNote;
+  renderGrids();
+  // 結果を既に表示中なら、選択済みの2人分だけ言語を切り替えて再描画する(スクロールはしない)
+  const resultArea = document.getElementById('result-area');
+  if (resultArea.style.display !== 'none' && selMe !== null && selYou !== null) {
+    renderResultCard(false);
+  }
+}
+function setLang(lang) {
+  LANG = lang;
+  document.getElementById('btn-lang-ja').classList.toggle('active', lang === 'ja');
+  document.getElementById('btn-lang-en').classList.toggle('active', lang === 'en');
+  applyLangUI();
+}
+document.getElementById('btn-lang-ja').addEventListener('click', () => setLang('ja'));
+document.getElementById('btn-lang-en').addEventListener('click', () => setLang('en'));
 </script>
 </body>
 </html>

@@ -131,7 +131,9 @@ const UI_TEXT = {
     guessSuffix: '(推測)',
     scoreSuffix: '点',
     lockedText: (meta) => `${meta.icon} ${meta.label}の相性は、お相手が実際に診断すると分かります。<br>推測だけでは性格タイプ以外までは分かりません。`,
-    lockedCta: 'お相手を診断に誘う 🔮',
+    lockedFreeBadge: '🆓 無料で解放されます',
+    lockedCta: '招待リンクをコピーして誘う 🔮',
+    inviteCopiedLabel: 'リンクをコピーしました ✓',
     catNameSuffix: 'の相性',
     scoreTierSep: '点・',
     matchLabel: '一致',
@@ -179,7 +181,9 @@ const UI_TEXT = {
     guessSuffix: ' (Guessed)',
     scoreSuffix: ' pts',
     lockedText: (meta) => `${meta.icon} ${meta.label} compatibility unlocks once your match takes the real quiz.<br>Guessing alone can only tell us their personality type.`,
-    lockedCta: 'Invite Them to Take the Quiz 🔮',
+    lockedFreeBadge: '🆓 Unlocks for free',
+    lockedCta: 'Copy Invite Link 🔮',
+    inviteCopiedLabel: 'Link copied ✓',
     catNameSuffix: ' Compatibility',
     scoreTierSep: ' pts · ',
     matchLabel: 'Match',
@@ -441,10 +445,21 @@ const screens = {
   guess: document.getElementById('screen-guess'),
   result: document.getElementById('screen-result'),
 };
+// 画面遷移のたびに新しい画面の見出し(相当の要素)へフォーカスを移し、スクリーンリーダー・
+// キーボードユーザーに遷移が起きたことを伝える(MBTI診断のfocusScreenHeading()と同じ方式)。
+// 直前にwindow.scrollTo(0,0)で明示的にスクロール済みのため、focus側はpreventScroll:trueにして二重スクロールを防ぐ。
+function focusScreenHeading(name) {
+  const headingIds = { start: 'start-title', guess: 'guess-title', result: 'score-hero' };
+  const el = document.getElementById(headingIds[name]);
+  if (!el) return;
+  if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '-1');
+  el.focus({ preventScroll: true });
+}
 function showScreen(name) {
   Object.values(screens).forEach(s => s.classList.remove('active'));
   screens[name].classList.add('active');
   window.scrollTo(0, 0);
+  focusScreenHeading(name);
 }
 
 let state = {
@@ -483,39 +498,54 @@ document.getElementById('code-form').addEventListener('submit', (e) => {
 });
 
 // ===== 推測クイズ =====
+// 2026-09-05改訂: 4問を最初から縦に全展開表示すると誤タップが起きやすいため、
+// 1問ずつ表示+プログレスバーに変更(MBTI診断のチャット形式クイズと同様の考え方)。
+let guessQuizIndex = 0;
 function startGuessQuiz() {
   trackEvent('guess_quiz_start');
   state.guessAnswers = {};
-  const wrap = document.getElementById('guess-questions');
-  wrap.innerHTML = '';
+  guessQuizIndex = 0;
+  renderGuessQuestion();
+  showScreen('guess');
+}
+function updateGuessProgress() {
   const questions = getGuessQuestions();
-  questions.forEach((q, qi) => {
-    const box = document.createElement('div');
-    box.className = 'guess-question';
-    box.innerHTML = `
-      <div class="q-num">Q${qi + 1} / ${questions.length}</div>
+  const fill = document.getElementById('guess-progress-fill');
+  const text = document.getElementById('guess-progress-text');
+  const pct = Math.round((guessQuizIndex / questions.length) * 100);
+  if (fill) fill.style.width = `${pct}%`;
+  if (text) text.textContent = `${guessQuizIndex + 1} / ${questions.length}`;
+}
+function renderGuessQuestion() {
+  const questions = getGuessQuestions();
+  const q = questions[guessQuizIndex];
+  const wrap = document.getElementById('guess-questions');
+  wrap.innerHTML = `
+    <div class="guess-question">
+      <div class="q-num">Q${guessQuizIndex + 1} / ${questions.length}</div>
       <div class="q-text">${q.text}</div>
       <div class="guess-options">
         <button type="button" class="option-btn" data-axis="${q.axis}" data-letter="${q.a.letter}">${q.a.text}</button>
         <button type="button" class="option-btn" data-axis="${q.axis}" data-letter="${q.b.letter}">${q.b.text}</button>
       </div>
-    `;
-    wrap.appendChild(box);
-  });
+    </div>
+  `;
+  updateGuessProgress();
   wrap.querySelectorAll('.option-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      const axis = btn.dataset.axis;
-      state.guessAnswers[axis] = btn.dataset.letter;
-      wrap.querySelectorAll(`.option-btn[data-axis="${axis}"]`).forEach(b => b.classList.toggle('selected', b === btn));
-      if (Object.keys(state.guessAnswers).length === questions.length) {
-        setTimeout(() => {
+      wrap.querySelectorAll('.option-btn').forEach(b => { b.classList.toggle('selected', b === btn); b.disabled = true; });
+      state.guessAnswers[q.axis] = btn.dataset.letter;
+      setTimeout(() => {
+        if (guessQuizIndex < questions.length - 1) {
+          guessQuizIndex++;
+          renderGuessQuestion();
+        } else {
           state.guessedPersonality = AXIS_ORDER.map(a => state.guessAnswers[a]).join('');
           showResult();
-        }, 350);
-      }
+        }
+      }, 350);
     });
   });
-  showScreen('guess');
 }
 
 // ===== 結果計算・表示 =====
@@ -600,9 +630,11 @@ function renderResultCards(data) {
       locked.className = 'locked-card';
       locked.innerHTML = `
         <div class="lock-emoji">🔒</div>
+        <span class="badge lock-free-badge">${t.lockedFreeBadge}</span>
         <p>${t.lockedText(meta)}</p>
-        <a class="btn-secondary" href="https://deskanimals114510-ai.github.io/personality-type-quiz/" target="_blank" rel="noopener" style="display:inline-block;text-decoration:none;">${t.lockedCta}</a>
+        <button type="button" class="btn-secondary btn-invite">${t.lockedCta}</button>
       `;
+      locked.querySelector('.btn-invite').addEventListener('click', (e) => inviteToQuiz(e.currentTarget));
       wrap.appendChild(locked);
       return;
     }
@@ -665,6 +697,24 @@ function copyResultUrl() {
     setTimeout(() => { btn.textContent = original; }, 2000);
   });
   trackEvent('share', { method: 'copy_url' });
+}
+
+// ===== お相手を診断に誘う(2026-09-05追加) =====
+// 招待リンク(?invite=自分のコード)をコピーし、お相手が診断サイトで自分のコードを取得後に
+// このサイトへ戻れば「お相手の結果コード」欄に招待者(自分)のコードが自動で入るようにする。
+// 単なる外部リンクだった「誘う」CTAを、実際に相性診断が完了しやすくなる導線に変える。
+function inviteUrl() {
+  return `${location.origin}${location.pathname}?invite=${encodeURIComponent(state.me || '')}&lang=${LANG}`;
+}
+function inviteToQuiz(btn) {
+  const t = UI_TEXT[LANG];
+  trackEvent('invite_copy');
+  const original = btn.textContent;
+  navigator.clipboard.writeText(inviteUrl()).then(() => {
+    btn.textContent = t.inviteCopiedLabel;
+    setTimeout(() => { btn.textContent = original; }, 2500);
+  }).catch(() => { /* クリップボード権限が無い環境でも診断導線自体は続行する */ });
+  window.open('https://deskanimals114510-ai.github.io/personality-type-quiz/', '_blank', 'noopener,noreferrer');
 }
 
 function shareText() {
@@ -1042,9 +1092,15 @@ document.getElementById('btn-lang-en').addEventListener('click', () => setLang('
   const youParam = params.get('you');
   const guessParam = params.get('guess');
   const langParam = params.get('lang');
+  const inviteParam = params.get('invite');
   if (langParam === 'en' || langParam === 'ja') setLang(langParam);
   if (meParam) document.getElementById('input-me').value = meParam;
   if (youParam) document.getElementById('input-you').value = youParam;
+  // 招待リンク(?invite=招待者のコード)経由のアクセスなら、招待者を「お相手」欄に自動入力する
+  if (!youParam && inviteParam) {
+    const inviteCode = extractCode(inviteParam);
+    if (inviteCode) document.getElementById('input-you').value = inviteCode;
+  }
 
   // ?me=と?you=が両方揃っている共有リンクなら、入力画面を飛ばして直接結果を表示する
   if (meParam && youParam) {
