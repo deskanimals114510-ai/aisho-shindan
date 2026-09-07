@@ -1093,7 +1093,12 @@ document.getElementById('btn-lang-en').addEventListener('click', () => setLang('
   const guessParam = params.get('guess');
   const langParam = params.get('lang');
   const inviteParam = params.get('invite');
-  if (langParam === 'en' || langParam === 'ja') setLang(langParam);
+  // ?langが無い通常訪問(検索流入・直接アクセス等)でもsetLang()を必ず実行する。
+  // 以前は langParam が明示的に en/ja の時しかsetLang()を呼ばず、その内部でしか
+  // 実行されないapplyLangUI()も未実行のままだったため、UI_TEXT.jaの内容(フッター
+  // 免責文言等)が反映されずindex.html側の静的な初期文言が表示され続けていた
+  // (MBTI診断で2026-09-08発見・修正、本サイトにも同型のバグを確認し横展開)。
+  setLang(langParam === 'en' ? 'en' : 'ja');
   if (meParam) document.getElementById('input-me').value = meParam;
   if (youParam) document.getElementById('input-you').value = youParam;
   // 招待リンク(?invite=招待者のコード)経由のアクセスなら、招待者を「お相手」欄に自動入力する
