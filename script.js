@@ -687,6 +687,21 @@ function resultUrl() {
   return `${base}&you=${state.you}&lang=${LANG}`;
 }
 
+// 2026-09-11: X/LINEシェア時のリンクプレビュー(OGP)対策。`?me=&you=`の動的URLはクローラーが
+// JSを実行しないため常に汎用OGPのまま。pairs/{type1}_{type2}.htmlは16×16の個別ペアごとに
+// 専用OGPを既に持つため、SNS共有リンクにはこちらを使う(2つの性格タイプコードをアルファベット順に
+// 並べたファイル名、既存の生成規則と一致)。コピーURL・招待リンクは従来通りresultUrl()を維持。
+function shareOgUrl() {
+  if (!lastResultData) return resultUrl();
+  const me = lastResultData.myTypes && lastResultData.myTypes.personality;
+  const you = lastResultData.otherTypes && lastResultData.otherTypes.personality;
+  if (!/^[A-Z]{4}$/.test(me) || !/^[A-Z]{4}$/.test(you)) return resultUrl();
+  const pair = [me.toLowerCase(), you.toLowerCase()].sort().join('_');
+  const path = location.pathname;
+  const dir = path.endsWith('/') ? path : path.slice(0, path.lastIndexOf('/') + 1);
+  return location.origin + dir + 'pairs/' + pair + '.html';
+}
+
 function copyResultUrl() {
   if (!lastResultData) return;
   const t = UI_TEXT[LANG];
@@ -726,14 +741,14 @@ function shareText() {
 function shareResult() {
   if (!lastResultData) return;
   const text = shareText();
-  const url = encodeURIComponent(resultUrl());
+  const url = encodeURIComponent(shareOgUrl());
   window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${url}`, '_blank', 'noopener,noreferrer');
   trackEvent('share', { method: 'x' });
 }
 function shareResultLine() {
   if (!lastResultData) return;
   const text = shareText();
-  const url = encodeURIComponent(resultUrl());
+  const url = encodeURIComponent(shareOgUrl());
   window.open(`https://social-plugins.line.me/lineit/share?url=${url}&text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
   trackEvent('share', { method: 'line' });
 }
