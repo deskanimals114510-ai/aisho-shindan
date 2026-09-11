@@ -639,12 +639,14 @@ body {
   margin-bottom: 6px;
 }
 .code-input:focus { outline: none; border-color: var(--primary); }
+.code-input::placeholder { color: var(--text-sub); opacity: 0.55; font-style: italic; }
 .code-hint {
   font-size: 0.72rem;
   color: var(--text-sub);
   margin-bottom: 18px;
   line-height: 1.5;
 }
+.code-hint a { color: var(--primary-dark); font-weight: 700; text-decoration: underline; }
 .code-error {
   font-size: 0.78rem;
   color: #e0507a;
