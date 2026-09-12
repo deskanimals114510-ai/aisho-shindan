@@ -1099,6 +1099,7 @@ body {
 .option-btn:focus-visible,
 .code-input:focus-visible,
 .lucky-item:focus-visible,
+.site-nav-link:focus-visible,
 .breadcrumb-nav a:focus-visible {
   outline: 2px solid var(--primary-dark);
   outline-offset: 2px;
