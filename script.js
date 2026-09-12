@@ -1,3 +1,10 @@
+// preload+media="print"で読み込んだGoogle Fontsを実際に適用する(初期描画をブロックしないための構成)。
+// インラインonload属性はCSP(script-src 'self')でブロックされるため、外部JS側で切り替える。
+(function applyPreloadedFont() {
+  const fontLink = document.getElementById('font-link');
+  if (fontLink) fontLink.media = 'all';
+})();
+
 // ===== 型データ(性格・恋愛・仕事タイプ診断から流用、絵文字+ニックネームのみ) =====
 // 説明文(96件のFable執筆済み文章)はこのサイトでは使わない。相性診断はニックネーム対比のみで十分と判断し、
 // 新規サイトを軽量に保つため意図的にニックネームのみ複製している。
@@ -114,7 +121,7 @@ const UI_TEXT = {
     titleHtml: 'あなたと<span class="grad-text">お相手の相性</span>、診断します',
     lead: '「性格・恋愛・仕事タイプ診断」の結果コードを使って、<br>2人の相性を3カテゴリで診断します。',
     badges: ['✨ 性格', '💌 恋愛', '💼 仕事', 'の相性がわかります'],
-    hubLink: '🔮 相性10パターンを先にチェックする',
+    hubLink: '相性10パターンを先にチェックする',
     labelMe: 'あなたの結果コード',
     placeholderMe: 'INFPESFJENTJ または結果URL',
     hintMe: 'まだ診断していない方は<a id="link-to-quiz" href="https://deskanimals114510-ai.github.io/personality-type-quiz/" target="_blank" rel="noopener">性格・恋愛・仕事タイプ診断</a>を先にどうぞ(無料・約3分)',
@@ -167,7 +174,7 @@ const UI_TEXT = {
     titleHtml: 'Find Out <span class="grad-text">Your Compatibility</span>',
     lead: 'Using your result code from the Personality/Love/Career Type Quiz,<br>we\'ll check your compatibility across 3 categories.',
     badges: ['✨ Personality', '💌 Love', '💼 Career', 'compatibility, revealed'],
-    hubLink: '🔮 Browse the 10 Compatibility Patterns First',
+    hubLink: 'Browse the 10 Compatibility Patterns First',
     labelMe: 'Your Result Code',
     placeholderMe: 'INFPESFJENTJ or result URL',
     hintMe: 'Haven\'t taken the quiz yet? Try the <a id="link-to-quiz" href="https://deskanimals114510-ai.github.io/personality-type-quiz/" target="_blank" rel="noopener">Personality/Love/Career Type Quiz</a> first (free, about 3 minutes)',
@@ -1062,7 +1069,7 @@ function applyLangUI() {
   document.getElementById('start-title').innerHTML = t.titleHtml;
   document.getElementById('start-lead').innerHTML = t.lead;
   document.getElementById('start-badges').innerHTML = t.badges.map(b => `<span class="badge">${b}</span>`).join('');
-  document.getElementById('hub-link-text').textContent = t.hubLink;
+  document.getElementById('hub-cta-pairs-title').textContent = t.hubLink;
   document.getElementById('label-me').textContent = t.labelMe;
   document.getElementById('input-me').setAttribute('placeholder', t.placeholderMe);
   document.getElementById('hint-me').innerHTML = t.hintMe;

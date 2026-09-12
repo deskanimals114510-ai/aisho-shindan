@@ -31,7 +31,9 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&family=Poppins:wght@600;700;800&display=swap">
+<link id="font-link" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" media="print">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet"></noscript>
 <link rel="stylesheet" href="style.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"相性診断","alternateName":"MBTI相性診断","description":"性格・恋愛・仕事タイプ診断の結果コードから、あなたとお相手の相性を3カテゴリで診断。お相手のコードが無くても4問で推測できます。","url":"https://deskanimals114510-ai.github.io/aisho-shindan/","inLanguage":"ja"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","@id":"https://deskanimals114510-ai.github.io/aisho-shindan/#organization","name":"Desk Animals Lab","url":"https://deskanimals114510-ai.github.io/aisho-shindan/","logo":{"@type":"ImageObject","url":"https://deskanimals114510-ai.github.io/aisho-shindan/og-image.jpg","width":1200,"height":630},"sameAs":["https://x.com/deskanimalslab","https://www.instagram.com/desk.animals114510/","https://www.tiktok.com/@desk.animals"]}</script>
@@ -94,9 +96,12 @@
         <span class="badge">の相性がわかります</span>
       </div>
 
-      <a class="hub-link" href="pairs/">
-        <span id="hub-link-text">🔮 相性10パターンを先にチェックする</span>
-        <span class="hub-link-arrow" aria-hidden="true">→</span>
+      <a class="hub-cta" href="pairs/">
+        <span class="hub-cta-emoji">🔮</span>
+        <span class="hub-cta-text">
+          <span id="hub-cta-pairs-title" class="hub-cta-title">相性10パターンを先にチェックする</span>
+        </span>
+        <span class="hub-cta-arrow" aria-hidden="true">›</span>
       </a>
 
       <form id="code-form" class="code-form">
