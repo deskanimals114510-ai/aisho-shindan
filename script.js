@@ -150,6 +150,9 @@ const UI_TEXT = {
     followLabel: '🐹 Desk Animalsをフォローする',
     followLabel2: '🔮 気になる方はこちらもどうぞ',
     footerDisclaimer: '本診断はエンタメ目的のコンテンツです。科学的な心理診断に代わるものではありません。',
+    transparencyTitle: '🔍 この相性診断が、他と違うところ',
+    transparencyBody: '多くの相性診断は、2人のタイプを選ぶだけで固定の相性表を返します。この診断は、あなたが実際に受けた性格・恋愛・仕事タイプ診断の結果コードに基づいてパーソナライズされます。お相手のコードが分からなくても、4つの観察ベースの質問だけでタイプを推測できるので、招待や登録なしで今すぐ診断できます。',
+    transparencyNote: '相性の判定は心理学的に検証された指標ではなく、MBTIの考え方を参考にしたエンタメ目的の独自基準です。楽しみながら会話のきっかけにしてもらえたら嬉しいです。',
     shareText: (name, score) => `相性診断やってみた!\n私とお相手は「${name}」・相性${score}点でした\nお相手のコードがなくても4問で診断できるよ→\n#相性診断 #MBTI診断`,
     cardEyebrow: '相性診断の結果',
     cardCta: 'あなたとお相手の相性は? 無料診断',
@@ -200,6 +203,9 @@ const UI_TEXT = {
     followLabel: '🐹 Follow Desk Animals',
     followLabel2: '🔮 You might also like',
     footerDisclaimer: 'This test is for entertainment purposes only and is not a substitute for a scientific psychological assessment.',
+    transparencyTitle: "🔍 What makes this compatibility quiz different",
+    transparencyBody: "Most compatibility quizzes just have you pick two types and return a fixed chart. This quiz is personalized to the actual result code from your own Personality/Love/Career quiz. And even without your partner's code, you can guess their type from 4 observation-based questions — no invite or sign-up needed.",
+    transparencyNote: "This isn't based on a scientifically validated measure — it's an original, entertainment-focused system inspired by MBTI concepts. We hope it gives you something fun to talk about together.",
     shareText: (name, score) => `Just checked our compatibility!\nWe're a "${name}" — ${score}% match\nNo code from them? You can still guess it in 4 questions →\n#CompatibilityQuiz #MBTI`,
     pendingTranslationNote: '🌐 English write-up for this pair is coming soon — shown in Japanese for now.',
     cardEyebrow: 'Your Compatibility Result',
@@ -1078,6 +1084,9 @@ function applyLangUI() {
   document.getElementById('follow-label-1').textContent = t.followLabel;
   document.getElementById('follow-label-2').textContent = t.followLabel2;
   document.getElementById('footer-disclaimer').textContent = t.footerDisclaimer;
+  document.getElementById('transparency-title').textContent = t.transparencyTitle;
+  document.getElementById('transparency-body').textContent = t.transparencyBody;
+  document.getElementById('transparency-note').textContent = t.transparencyNote;
   document.documentElement.lang = LANG;
   // 結果画面が既に表示中なら、結果(relation/tier等、言語依存の値)を再計算してから再描画する。
   // render関数を呼び直すだけだとlastResultData.resultsに古い言語の相性文章が残ったままになる。
