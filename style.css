@@ -127,6 +127,20 @@ body {
   justify-content: center;
   padding: 28px 20px;
 }
+/* PC幅でのスタート画面2カラム化(2026-09-12、MBTI診断・黒曜診断と同じ設計方針) */
+.start-sidebar { display: flex; flex-direction: column; gap: 18px; }
+.start-sidebar .transparency-box { margin-top: 0; }
+@media (min-width: 900px) {
+  #app:has(#screen-start.active) { max-width: 980px; }
+  .start-layout {
+    display: grid;
+    grid-template-columns: 480px 1fr;
+    gap: 28px;
+    align-items: start;
+    width: 100%;
+  }
+  .start-sidebar { padding-top: 6px; }
+}
 .start-card {
   background: rgba(255, 255, 255, 0.72);
   backdrop-filter: blur(14px);
