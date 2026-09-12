@@ -91,6 +91,19 @@ body {
   .vs-avatar, .result-card-preview { animation: none; }
 }
 
+/* 超ワイド画面(2026-09-12、MBTI診断と同じ方針)。機能コンテンツの幅は
+   広げず、周囲の装飾ブロブ・きらめきを拡大・外側に再配置。 */
+@media (min-width: 1400px) {
+  .blob-1 { width: 480px; height: 480px; }
+  .blob-2 { width: 420px; height: 420px; }
+  .blob-3 { width: 380px; height: 380px; left: 74%; }
+  .blob-4 { width: 320px; height: 320px; left: -4%; }
+  .sparkle:nth-child(2) { left: 92%; }
+  .sparkle:nth-child(4) { left: 96%; }
+  .sparkle:nth-child(3) { left: 3%; }
+  .sparkle:nth-child(6) { left: 90%; }
+}
+
 #app {
   position: relative;
   z-index: 1;
