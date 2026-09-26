@@ -156,6 +156,11 @@ const UI_TEXT = {
     cardPreviewHint: '画像を長押し(スマホ)または右クリックで保存できます',
     followLabel: '🐹 Desk Animalsをフォローする',
     followLabel2: '🔮 気になる方はこちらもどうぞ',
+    followLinkMbti: '性格・恋愛・仕事タイプ診断',
+    followLinkKokuyo: '黒曜診断',
+    followLinkLovechar64: '恋愛キャラ診断(全64通り)',
+    followLabel3: '🐾 動物の雑学・診断もチェック',
+    followLinkTwMatome: '動物雑学まとめ',
     footerDisclaimer: '本診断はエンタメ目的のコンテンツです。科学的な心理診断に代わるものではありません。',
     transparencyTitle: '🔍 この相性診断が、他と違うところ',
     transparencyBody: '多くの相性診断は、2人のタイプを選ぶだけで固定の相性表を返します。この診断は、あなたが実際に受けた性格・恋愛・仕事タイプ診断の結果コードに基づいてパーソナライズされます。お相手のコードが分からなくても、4つの観察ベースの質問だけでタイプを推測できるので、招待や登録なしで今すぐ診断できます。',
@@ -209,6 +214,11 @@ const UI_TEXT = {
     cardPreviewHint: 'Long-press (mobile) or right-click the image to save it',
     followLabel: '🐹 Follow Desk Animals',
     followLabel2: '🔮 You might also like',
+    followLinkMbti: 'Personality / Love / Career Type Quiz',
+    followLinkKokuyo: 'Kokuyo Fortune Reading',
+    followLinkLovechar64: 'Love Character Quiz (64 Types)',
+    followLabel3: '🐾 Check out more animal trivia & quizzes',
+    followLinkTwMatome: 'Animal Trivia Roundup',
     footerDisclaimer: 'This test is for entertainment purposes only and is not a substitute for a scientific psychological assessment.',
     transparencyTitle: "🔍 What makes this compatibility quiz different",
     transparencyBody: "Most compatibility quizzes just have you pick two types and return a fixed chart. This quiz is personalized to the actual result code from your own Personality/Love/Career quiz. And even without your partner's code, you can guess their type from 4 observation-based questions — no invite or sign-up needed.",
@@ -1090,6 +1100,11 @@ function applyLangUI() {
   document.getElementById('result-card-preview-hint').textContent = t.cardPreviewHint;
   document.getElementById('follow-label-1').textContent = t.followLabel;
   document.getElementById('follow-label-2').textContent = t.followLabel2;
+  document.getElementById('follow-link-mbti').textContent = t.followLinkMbti;
+  document.getElementById('follow-link-kokuyo').textContent = t.followLinkKokuyo;
+  document.getElementById('follow-link-lovechar64').textContent = t.followLinkLovechar64;
+  document.getElementById('follow-label-3').textContent = t.followLabel3;
+  document.getElementById('follow-link-tw-matome').textContent = t.followLinkTwMatome;
   document.getElementById('footer-disclaimer').textContent = t.footerDisclaimer;
   document.getElementById('transparency-title').textContent = t.transparencyTitle;
   document.getElementById('transparency-body').textContent = t.transparencyBody;
