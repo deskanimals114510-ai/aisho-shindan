@@ -176,6 +176,26 @@ body {
   }
   .start-sidebar { padding-top: 6px; }
 }
+
+/* PC幅での結果画面グリッド化(2026-09-30、MBTI診断と同じ設計方針)。結果カード
+   (性格/恋愛/仕事の3枚)は横に並べると一覧性が上がるが、スコアヘッダーや
+   シェア/保存ボタン・フォローリンクは幅を広げても間延びするだけなので、
+   結果画面の子要素は既定で480px幅に留め、カード列(#result-cards)だけ広げる。 */
+@media (min-width: 900px) {
+  #app:has(#screen-result.active) { max-width: 960px; }
+  #screen-result { align-items: center; }
+  #screen-result > * {
+    width: 100%;
+    max-width: 480px;
+  }
+  #result-cards {
+    max-width: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    align-items: start;
+  }
+}
 .start-card {
   background: rgba(255, 255, 255, 0.72);
   backdrop-filter: blur(14px);
