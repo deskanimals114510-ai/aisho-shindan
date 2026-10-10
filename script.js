@@ -503,6 +503,7 @@ document.getElementById('code-form').addEventListener('submit', (e) => {
     return;
   }
   state.me = me;
+  trackEvent('quiz_start', { quiz_name: 'aisho' });
 
   const youRaw = document.getElementById('input-you').value.trim();
   if (!youRaw) {
@@ -517,7 +518,7 @@ document.getElementById('code-form').addEventListener('submit', (e) => {
     return;
   }
   state.you = you;
-  showResult();
+  showResult(true);
 });
 
 // ===== 推測クイズ =====
@@ -564,7 +565,7 @@ function renderGuessQuestion() {
           renderGuessQuestion();
         } else {
           state.guessedPersonality = AXIS_ORDER.map(a => state.guessAnswers[a]).join('');
-          showResult();
+          showResult(true);
         }
       }, 350);
     });
@@ -598,7 +599,8 @@ function computeResults(myTypes, otherTypes, isGuess) {
   return results;
 }
 
-function showResult() {
+// countAsComplete: 自分で診断した時だけtrue(シェアされた結果URLを開いただけの表示は完了に数えない)
+function showResult(countAsComplete) {
   const myTypes = decodeTriple(state.me);
   const isGuess = !state.you;
   const otherTypes = state.you ? decodeTriple(state.you) : { personality: state.guessedPersonality, love: null, work: null };
@@ -610,6 +612,7 @@ function showResult() {
   renderResultCards(lastResultData);
   renderCardPreview(lastResultData);
   showScreen('result');
+  if (countAsComplete) trackEvent('quiz_complete', { quiz_name: 'aisho', guess: isGuess });
 }
 
 function renderScoreHero(data) {
@@ -1083,6 +1086,11 @@ function applyLangUI() {
   document.getElementById('label-me').textContent = t.labelMe;
   document.getElementById('input-me').setAttribute('placeholder', t.placeholderMe);
   document.getElementById('hint-me').innerHTML = t.hintMe;
+  // 招待リンク経由なら、性格診断へのリンクに招待者のコードを渡しておく(診断後に招待者付きで戻ってこられるように)
+  if (state.inviteCode) {
+    const quizLink = document.getElementById('link-to-quiz');
+    if (quizLink) quizLink.href += `?invite=${encodeURIComponent(state.inviteCode)}`;
+  }
   document.getElementById('label-you').textContent = t.labelYou;
   document.getElementById('input-you').setAttribute('placeholder', t.placeholderYou);
   document.getElementById('hint-you').textContent = t.hintYou;
@@ -1144,6 +1152,8 @@ document.getElementById('btn-lang-en').addEventListener('click', () => setLang('
   // 実行されないapplyLangUI()も未実行のままだったため、UI_TEXT.jaの内容(フッター
   // 免責文言等)が反映されずindex.html側の静的な初期文言が表示され続けていた
   // (MBTI診断で2026-09-08発見・修正、本サイトにも同型のバグを確認し横展開)。
+  const inviteCodeFromUrl = inviteParam ? extractCode(inviteParam) : null;
+  if (inviteCodeFromUrl) state.inviteCode = inviteCodeFromUrl;
   setLang(langParam === 'en' ? 'en' : 'ja');
   if (meParam) document.getElementById('input-me').value = meParam;
   if (youParam) document.getElementById('input-you').value = youParam;
@@ -1151,6 +1161,18 @@ document.getElementById('btn-lang-en').addEventListener('click', () => setLang('
   if (!youParam && inviteParam) {
     const inviteCode = extractCode(inviteParam);
     if (inviteCode) document.getElementById('input-you').value = inviteCode;
+  }
+
+  // 招待された人が性格診断を終えて戻ってきた場合(?me=自分&invite=招待者)は、そのまま招待者との相性を表示する
+  if (meParam && !youParam && inviteCodeFromUrl) {
+    const me = extractCode(meParam);
+    if (me) {
+      state.me = me;
+      state.you = inviteCodeFromUrl;
+      trackEvent('quiz_start', { quiz_name: 'aisho', via: 'invite' });
+      showResult(true);
+    }
+    return;
   }
 
   // ?me=と?you=が両方揃っている共有リンクなら、入力画面を飛ばして直接結果を表示する
