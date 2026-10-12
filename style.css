@@ -743,15 +743,16 @@ body {
 
 .lucky-pr-tag {
   display: inline-block;
-  font-size: 0.6rem;
+  font-size: 0.68rem;
   font-weight: 700;
-  color: #d18b2a;
+  color: #7a4e0e; /* 2026-10-13: 背景#fff3d6に対し約6.9:1(AA)。広告と分かる手がかりがこのタグになったため濃く */
   background: #fff3d6;
   border-radius: 6px;
   padding: 1px 6px;
   margin-left: 6px;
   vertical-align: middle;
 }
+.lucky-label > .lucky-pr-tag:first-child { margin-left: 0; }
 
 @media (min-width: 520px) {
   .start-card { padding: 48px 40px 40px; }
@@ -1163,4 +1164,20 @@ body {
   font-size: 0.74rem;
   color: var(--text-sub);
   font-style: italic;
+}
+
+/* ---- 相手のタイプへの贈り物欄(2026-10-13、script.jsのrenderGiftSection) ---- */
+.gift-section { margin: 20px 0 4px; }
+.gift-section .lucky-item { margin-top: 10px; }
+.gift-heading { margin: 0; font-size: 0.95rem; font-weight: 700; color: var(--text); text-align: center; }
+.gift-season { margin: 2px 0 0; font-size: 0.75rem; color: var(--text-sub); text-align: center; }
+.gift-reason { display: block; margin-top: 2px; font-size: 0.78rem; font-weight: 400; line-height: 1.5; color: var(--text); }
+.lucky-price {
+  display: inline-block; align-self: flex-start; font-size: 0.68rem; font-weight: 700;
+  color: #1f7a52; background: #eafaf0; border-radius: 6px; padding: 1px 7px; margin-top: 1px;
+}
+.lucky-item:focus-visible { outline: 3px solid #a8305c; outline-offset: 3px; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
 }

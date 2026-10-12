@@ -599,6 +599,114 @@ function computeResults(myTypes, otherTypes, isGuess) {
   return results;
 }
 
+// ===== 相手のタイプへの贈り物(2026-10-13、Amazonアソシエイト) =====
+// MBTI診断のMBTI_GIFTS(性格タイプ別おすすめ2点、Fable執筆)と同じデータ。理由文は主語を「あなた」にしない形なので
+// 相手向けにそのまま使える。JAのみ(米国タグ未取得のためEN表示では出さない)
+const AFFILIATE_TAG = 'tinywonders-22';
+const PARTNER_GIFTS = {
+  ISTJ: [
+    { name: '卓上カレンダー', keyword: '卓上カレンダー 月曜始まり シンプル', reason: '締め切りは守るもの、と言い切る机の相棒に。' },
+    { name: '本革ブックカバー', keyword: 'ブックカバー 本革 文庫', reason: '流行より、使い込んで育てる定番を選ぶ手に。' },
+  ],
+  ISFJ: [
+    { name: 'ガラスのティーポット', keyword: 'ティーポット 耐熱ガラス 茶こし付き', reason: '「大丈夫?」より先にお茶を差し出す、その手に。' },
+    { name: '卓上ウィークリーメモ', keyword: 'ウィークリー 卓上 メモパッド', reason: '他人の用事で埋まる前に、自分の予定を一行だけ。' },
+  ],
+  INFJ: [
+    { name: '入門用の万年筆', keyword: '万年筆 初心者 細字', reason: '頭の中で完結しがちな考えを、紙に降ろす一本。' },
+    { name: '藍染めのコースター', keyword: '藍染 コースター 布', reason: '雑談10回より本音1回。その長い夜のカップの下に。' },
+  ],
+  INTJ: [
+    { name: '卓上ホワイトボード', keyword: 'ホワイトボード 卓上 小型', reason: '3手先のシミュレーション、頭の外にも置き場を。' },
+    { name: '折りたたみチェス盤', keyword: 'チェスセット 折りたたみ 木製', reason: '相手の手も読む遊びなら、たぶん本気になる。' },
+  ],
+  ISTP: [
+    { name: '精密ドライバーセット', keyword: 'ドライバーセット 精密 小型', reason: '説明書は読まない、まず開けてみる派の必需品。' },
+    { name: 'LEDミニランタン', keyword: 'ランタン LED 小型 充電式', reason: '一人で考えたい夜、ふらっと外へ連れ出す灯りに。' },
+  ],
+  ISFP: [
+    { name: '水彩色鉛筆セット', keyword: '水彩色鉛筆 セット 24色', reason: '夕焼けの色に心が動いた日、その色を残せる。' },
+    { name: '小型ワイヤレススピーカー', keyword: 'Bluetoothスピーカー 小型 木目', reason: '音楽の一節で立ち止まる人の部屋に、小さな音源を。' },
+  ],
+  INFP: [
+    { name: '3年日記', keyword: '3年日記 日記帳 シンプル', reason: '進んだ距離の方を数えたい夜に、ページをめくる。' },
+    { name: '布のティッシュケース', keyword: 'ティッシュケース 布 おしゃれ', reason: '物語で本気で泣ける人の、枕元の定位置へ。' },
+  ],
+  INTP: [
+    { name: 'クリップ式ブックライト', keyword: 'ブックライト 充電式 クリップ', reason: '気づけば深夜2時の調べもの、手元だけ照らす。' },
+    { name: '木製の知恵の輪', keyword: '知恵の輪 木製 パズル', reason: '「なぜそうなるのか」が止まらない指先に、解く相手を。' },
+  ],
+  ESTP: [
+    { name: 'スマホショルダー', keyword: 'スマホ ショルダーストラップ', reason: '考える前に飛び出す足に、両手は空けておく。' },
+    { name: 'マグネットダーツ', keyword: 'ダーツボード 家庭用 マグネット', reason: '会議の10分で3ゲーム。待つのが苦手な人の壁に。' },
+  ],
+  ESFP: [
+    { name: '大人向けカードゲーム', keyword: 'パーティーゲーム カード 盛り上がる', reason: '部屋に入るだけで温度が上がる人が、卓を囲むなら。' },
+    { name: 'ストリングライト', keyword: 'ストリングライト LED 室内', reason: '今夜を全力で味わう派の部屋は、照明も祭りでいい。' },
+  ],
+  ENFP: [
+    { name: 'カラフル付箋セット', keyword: '付箋 大容量 カラフル', reason: '渋滞中のやりたいことリスト、色で仕分けてみる?' },
+    { name: 'パッキングキューブ', keyword: 'パッキングキューブ 旅行 圧縮', reason: '思い立った瞬間に動く人なら、荷造りも秒で終わる。' },
+  ],
+  ENTP: [
+    { name: '2人用対戦ボードゲーム', keyword: 'ボードゲーム 2人 対戦 戦略', reason: '議論はスポーツ。なら、休日にも対戦相手を。' },
+    { name: 'タイムマーカー付ボトル', keyword: 'ウォーターボトル 1L タイムマーカー', reason: '「本当にそうかな?」を3時間続けた喉に、水を。' },
+  ],
+  ESTJ: [
+    { name: '大画面デジタルタイマー', keyword: 'タイマー 大画面 デジタル 卓上', reason: '締め切りが決まって初めて安心する、その机の中央に。' },
+    { name: '陶器のコーヒードリッパー', keyword: 'コーヒードリッパー 陶器 1杯用', reason: '仕切り役の朝だけは、手順も時間も自分の好きに。' },
+  ],
+  ESFJ: [
+    { name: '木製のトレー', keyword: 'トレー 木製 カフェ', reason: '飲み会の席順を気にする人は、家でも配り役になる。' },
+    { name: '卓上の温湿度計', keyword: '温湿度計 卓上 デジタル', reason: '場の空気の変化を見逃さない目が、部屋の空気も。' },
+  ],
+  ENFJ: [
+    { name: 'ハーブ栽培キット', keyword: 'ハーブ 栽培キット 室内', reason: '人を育てる名人へ、今度は自分の窓辺で育てる番。' },
+    { name: '15分の砂時計', keyword: '砂時計 15分 おしゃれ', reason: '応援団長の休憩も、砂が落ちるまでは誰にも渡さない。' },
+  ],
+  ENTJ: [
+    { name: 'レザー調デスクマット', keyword: 'デスクマット 大型 レザー調', reason: '5合目から手を振る人の机は、やっぱり広い方がいい。' },
+    { name: '1000ピースのパズル', keyword: 'ジグソーパズル 1000ピース 風景', reason: '結論を急がなくていい時間を、たまには。' },
+  ],
+};
+
+// ¥1,000〜3,000・レビュー評価順の検索結果へ(MBTI診断のaffiliateUrlと同仕様)
+function affiliateUrl(keyword) {
+  return `https://www.amazon.co.jp/s?k=${encodeURIComponent(keyword)}&rh=p_36%3A100000-300000&s=review-rank&tag=${AFFILIATE_TAG}`;
+}
+
+// 日本時間の月日で季節の一言(MBTI診断gift.jsと同じ区切り)
+function giftSeasonLine() {
+  const parts = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Tokyo', month: '2-digit', day: '2-digit' }).formatToParts(new Date());
+  const md = Number(parts.find((p) => p.type === 'month').value) * 100 + Number(parts.find((p) => p.type === 'day').value);
+  if (md >= 1101 && md <= 1225) return 'クリスマスの贈り物にも';
+  if (md >= 1226 || md <= 110) return '年末年始のちょっとした贈り物にも';
+  if (md >= 201 && md <= 214) return 'バレンタインの贈り物にも';
+  if (md >= 301 && md <= 314) return 'ホワイトデーのお返しにも';
+  return '誕生日やちょっとしたお礼にも';
+}
+
+function renderGiftSection(data) {
+  const el = document.getElementById('gift-section');
+  const type = data.otherTypes.personality;
+  if (LANG !== 'ja' || !PARTNER_GIFTS[type]) { el.hidden = true; el.innerHTML = ''; return; }
+  const [emoji, name] = TYPE_MAPS.personality[type];
+  el.innerHTML = `
+    <p class="gift-heading">「${name}」タイプのお相手に贈るなら</p>
+    <p class="gift-season">${giftSeasonLine()}</p>
+    ${PARTNER_GIFTS[type].map((g) => `
+    <a class="lucky-item" href="${affiliateUrl(g.keyword)}" target="_blank" rel="noopener sponsored" data-aff-item="${g.name.replace(/"/g, '&quot;')}">
+      <span class="lucky-emoji" aria-hidden="true">${emoji}</span>
+      <span class="lucky-text">
+        <span class="lucky-label"><span class="lucky-pr-tag">PR</span><span class="sr-only">(広告)</span><span class="gift-reason">${g.reason}</span></span>
+        <span class="lucky-name">${g.name}をAmazonで見る</span>
+        <span class="lucky-price">¥1,000〜3,000の価格帯で検索</span>
+      </span>
+      <span class="lucky-arrow" aria-hidden="true">›</span><span class="sr-only">(新しいタブで開きます)</span>
+    </a>`).join('')}`;
+  el.hidden = false;
+}
+
 // countAsComplete: 自分で診断した時だけtrue(シェアされた結果URLを開いただけの表示は完了に数えない)
 function showResult(countAsComplete) {
   const myTypes = decodeTriple(state.me);
@@ -610,6 +718,7 @@ function showResult(countAsComplete) {
   lastResultData = { myTypes, otherTypes, isGuess, results };
   renderScoreHero(lastResultData);
   renderResultCards(lastResultData);
+  renderGiftSection(lastResultData);
   renderCardPreview(lastResultData);
   showScreen('result');
   if (countAsComplete) trackEvent('quiz_complete', { quiz_name: 'aisho', guess: isGuess });
@@ -1070,6 +1179,15 @@ document.getElementById('btn-copy-url').addEventListener('click', copyResultUrl)
 document.getElementById('btn-restart').addEventListener('click', restartQuiz);
 document.getElementById('btn-save-card').addEventListener('click', () => downloadResultCard('x'));
 document.getElementById('btn-save-card-story').addEventListener('click', () => downloadResultCard('story'));
+document.getElementById('gift-section').addEventListener('click', (e) => {
+  const link = e.target.closest('.lucky-item');
+  if (!link || !lastResultData) return;
+  trackEvent('affiliate_click', {
+    quiz_name: 'aisho', placement: 'gift_section', mode: 'gift',
+    // 他サイトのresult_typeは本人の結果。相性診断は相手のタイプなので接頭辞で区別する
+    result_type: `partner_${lastResultData.otherTypes.personality}`, item_name: link.dataset.affItem || '',
+  });
+});
 
 // ===== JA/EN切替(2026-08-29、10組み合わせを1日5組ペースでFable翻訳中。
 // 未翻訳分はgetRelationshipTable()がJA版へ自動フォールバックする) =====
@@ -1124,8 +1242,10 @@ function applyLangUI() {
     lastResultData.results = computeResults(lastResultData.myTypes, lastResultData.otherTypes, lastResultData.isGuess);
     renderScoreHero(lastResultData);
     renderResultCards(lastResultData);
+    renderGiftSection(lastResultData);
     renderCardPreview(lastResultData);
   }
+  document.getElementById('footer-affiliate').hidden = LANG === 'en';
 }
 function setLang(lang) {
   LANG = lang;
