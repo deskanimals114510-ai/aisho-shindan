@@ -41,9 +41,9 @@ const TYPE_MAPS = {
   },
 };
 const CATEGORY_META = {
-  personality: { label: '性格', icon: '✨', color: '#b892ff' },
-  love: { label: '恋愛', icon: '💌', color: '#ff8fb3' },
-  work: { label: '仕事', icon: '💼', color: '#5bc8b5' },
+  personality: { label: '性格', icon: '✨', color: '#b892ff', textColor: '#6b3fb0' },
+  love: { label: '恋愛', icon: '💌', color: '#ff8fb3', textColor: '#a8305c' },
+  work: { label: '仕事', icon: '💼', color: '#5bc8b5', textColor: '#1e6f5c' },
 };
 
 // ===== EN版タイプ名(MBTI診断script.jsのANIMAL_MAP_EN/WEATHER_MAP_EN/VEHICLE_MAP_ENから
@@ -105,9 +105,9 @@ const TYPE_MAPS_EN = {
   },
 };
 const CATEGORY_META_EN = {
-  personality: { label: 'Personality', icon: '✨', color: '#b892ff' },
-  love: { label: 'Love', icon: '💌', color: '#ff8fb3' },
-  work: { label: 'Career', icon: '💼', color: '#5bc8b5' },
+  personality: { label: 'Personality', icon: '✨', color: '#b892ff', textColor: '#6b3fb0' },
+  love: { label: 'Love', icon: '💌', color: '#ff8fb3', textColor: '#a8305c' },
+  work: { label: 'Career', icon: '💼', color: '#5bc8b5', textColor: '#1e6f5c' },
 };
 let LANG = 'ja';
 function getTypeMaps() { return LANG === 'en' ? TYPE_MAPS_EN : TYPE_MAPS; }
@@ -141,6 +141,7 @@ const UI_TEXT = {
     lockedFreeBadge: '🆓 無料で解放されます',
     lockedCta: '招待リンクをコピーして誘う 🔮',
     inviteCopiedLabel: 'リンクをコピーしました ✓',
+    copyFailedLabel: 'コピーできませんでした',
     catNameSuffix: 'の相性',
     scoreTierSep: '点・',
     matchLabel: '一致',
@@ -159,6 +160,11 @@ const UI_TEXT = {
     followLinkMbti: '性格・恋愛・仕事タイプ診断',
     followLinkKokuyo: '黒曜診断',
     followLinkLovechar64: '恋愛キャラ診断(全64通り)',
+    siteNavAria: 'Desk Animals Labの診断サイト一覧',
+    siteNavLabel: '🐾 他の診断もどうぞ',
+    siteNavMbti: '🔮 性格・恋愛・仕事タイプ診断',
+    siteNavKokuyo: '🌙 黒曜診断',
+    siteNavLovechar64: '💞 恋愛キャラ診断64',
     followLabel3: '🐾 動物の雑学・診断もチェック',
     followLinkTwMatome: '動物雑学まとめ',
     footerDisclaimer: '本診断はエンタメ目的のコンテンツです。科学的な心理診断に代わるものではありません。',
@@ -199,6 +205,7 @@ const UI_TEXT = {
     lockedFreeBadge: '🆓 Unlocks for free',
     lockedCta: 'Copy Invite Link 🔮',
     inviteCopiedLabel: 'Link copied ✓',
+    copyFailedLabel: "Couldn't copy",
     catNameSuffix: ' Compatibility',
     scoreTierSep: ' pts · ',
     matchLabel: 'Match',
@@ -217,6 +224,11 @@ const UI_TEXT = {
     followLinkMbti: 'Personality / Love / Career Type Quiz',
     followLinkKokuyo: 'Kokuyo Fortune Reading',
     followLinkLovechar64: 'Love Character Quiz (64 Types)',
+    siteNavAria: 'Desk Animals Lab quiz sites',
+    siteNavLabel: '🐾 Try our other quizzes',
+    siteNavMbti: '🔮 Personality / Love / Career Type Quiz',
+    siteNavKokuyo: '🌙 Kokuyo Fortune Reading',
+    siteNavLovechar64: '💞 Love Character Quiz 64',
     followLabel3: '🐾 Check out more animal trivia & quizzes',
     followLinkTwMatome: 'Animal Trivia Roundup',
     footerDisclaimer: 'This test is for entertainment purposes only and is not a substitute for a scientific psychological assessment.',
@@ -441,7 +453,8 @@ function extractCode(raw) {
     } catch (e) { /* URLとして解析できない場合はそのまま文字列処理を試みる */ }
   }
   s = s.toUpperCase().replace(/[^A-Z]/g, '');
-  return /^[A-Z]{12}$/.test(s) ? s : null;
+  // 4文字ずつ実在するMBTIの文字か確かめる(英字12文字だけだと、存在しないタイプで結果描画が例外になる)
+  return /^([EI][SN][TF][JP]){3}$/.test(s) ? s : null;
 }
 function decodeTriple(code12) {
   return { personality: code12.slice(0, 4), love: code12.slice(4, 8), work: code12.slice(8, 12) };
@@ -539,6 +552,12 @@ function updateGuessProgress() {
   const pct = Math.round((guessQuizIndex / questions.length) * 100);
   if (fill) fill.style.width = `${pct}%`;
   if (text) text.textContent = `${guessQuizIndex + 1} / ${questions.length}`;
+  const bar = document.getElementById('guess-progress-bar');
+  if (bar) {
+    bar.setAttribute('aria-valuenow', String(pct));
+    bar.setAttribute('aria-valuetext', `${guessQuizIndex + 1} / ${questions.length}`);
+    bar.setAttribute('aria-label', LANG === 'en' ? 'Question progress' : '質問の進み具合');
+  }
 }
 function renderGuessQuestion() {
   const questions = getGuessQuestions();
@@ -689,7 +708,10 @@ function giftSeasonLine() {
 function renderGiftSection(data) {
   const el = document.getElementById('gift-section');
   const type = data.otherTypes.personality;
-  if (LANG !== 'ja' || !PARTNER_GIFTS[type]) { el.hidden = true; el.innerHTML = ''; return; }
+  if (LANG !== 'ja' || !PARTNER_GIFTS[type]) {
+    if (giftSectionObserver) { giftSectionObserver.disconnect(); giftSectionObserver = null; }
+    el.hidden = true; el.innerHTML = ''; return;
+  }
   const [emoji, name] = TYPE_MAPS.personality[type];
   el.innerHTML = `
     <p class="gift-heading">「${name}」タイプのお相手に贈るなら</p>
@@ -705,6 +727,23 @@ function renderGiftSection(data) {
       <span class="lucky-arrow" aria-hidden="true">›</span><span class="sr-only">(新しいタブで開きます)</span>
     </a>`).join('')}`;
   el.hidden = false;
+  observeGiftSection(el, type);
+}
+
+// 贈り物欄が画面に半分以上入ったら1回だけsection_viewを送る(描画のたびに付け直す。値の形はaffiliate_clickと揃える)
+let giftSectionObserver = null;
+function observeGiftSection(el, partnerType) {
+  if (giftSectionObserver) { giftSectionObserver.disconnect(); giftSectionObserver = null; }
+  if (!('IntersectionObserver' in window)) return;
+  giftSectionObserver = new IntersectionObserver((entries, obs) => {
+    if (!entries.some((en) => en.isIntersecting && en.intersectionRatio >= 0.5)) return;
+    obs.disconnect();
+    if (giftSectionObserver === obs) giftSectionObserver = null;
+    trackEvent('section_view', {
+      quiz_name: 'aisho', placement: 'gift_section', mode: 'gift', result_type: `partner_${partnerType}`,
+    });
+  }, { threshold: 0.5 });
+  giftSectionObserver.observe(el);
 }
 
 // countAsComplete: 自分で診断した時だけtrue(シェアされた結果URLを開いただけの表示は完了に数えない)
@@ -778,7 +817,8 @@ function renderResultCards(data) {
     const otherInfo = typeMaps[cat][r.otherCode];
     const card = document.createElement('div');
     card.className = 'result-card';
-    card.style.setProperty('--accent', meta.color);
+    card.style.setProperty('--accent', meta.color); // 枠線用(淡色)
+    card.style.setProperty('--accent-text', meta.textColor); // 文字用(白背景で4.5:1以上の濃色)
     card.style.animationDelay = `${i * 0.12}s`;
     card.innerHTML = `
       <div class="cat-name">${meta.icon} ${meta.label}${t.catNameSuffix}</div>
@@ -837,16 +877,27 @@ function shareOgUrl() {
   return location.origin + dir + 'pairs/' + pair + '.html';
 }
 
+// ボタンの文言を一時的に差し替えて戻す。表示中に連打されても、差し替え前の文言を取り違えない
+function flashButton(btn, label, ms) {
+  if (!btn._flashTimer) btn._origLabel = btn.textContent;
+  clearTimeout(btn._flashTimer);
+  btn.textContent = label;
+  btn._flashTimer = setTimeout(() => { btn.textContent = btn._origLabel; btn._flashTimer = null; }, ms);
+}
+
 function copyResultUrl() {
   if (!lastResultData) return;
   const t = UI_TEXT[LANG];
   const btn = document.getElementById('btn-copy-url');
+  const flash = (label) => flashButton(btn, label, 2000);
+  if (!navigator.clipboard || !navigator.clipboard.writeText) {
+    flash(t.copyFailedLabel);
+    return;
+  }
   navigator.clipboard.writeText(resultUrl()).then(() => {
-    const original = btn.textContent;
-    btn.textContent = t.copiedLabel;
-    setTimeout(() => { btn.textContent = original; }, 2000);
-  });
-  trackEvent('share', { method: 'copy_url' });
+    flash(t.copiedLabel);
+    trackEvent('share', { method: 'copy_url' });
+  }).catch(() => flash(t.copyFailedLabel));
 }
 
 // ===== お相手を診断に誘う(2026-09-05追加) =====
@@ -859,12 +910,14 @@ function inviteUrl() {
 function inviteToQuiz(btn) {
   const t = UI_TEXT[LANG];
   trackEvent('invite_copy');
-  const original = btn.textContent;
-  navigator.clipboard.writeText(inviteUrl()).then(() => {
-    btn.textContent = t.inviteCopiedLabel;
-    setTimeout(() => { btn.textContent = original; }, 2500);
-  }).catch(() => { /* クリップボード権限が無い環境でも診断導線自体は続行する */ });
+  const flash = (label) => flashButton(btn, label, 2500);
+  // コピーは新しいタブを開く前に始める(タブが前面に出てページのフォーカスが外れると書き込みが拒否されるため)。
+  // クリップボード権限が無い環境でも診断導線自体は続行する
+  const copying = navigator.clipboard && navigator.clipboard.writeText
+    ? navigator.clipboard.writeText(inviteUrl())
+    : Promise.reject(new Error('clipboard unavailable'));
   window.open('https://deskanimals114510-ai.github.io/personality-type-quiz/', '_blank', 'noopener,noreferrer');
+  copying.then(() => flash(t.inviteCopiedLabel)).catch(() => flash(t.copyFailedLabel));
 }
 
 function shareText() {
@@ -1104,6 +1157,7 @@ async function buildCompatCardCanvas(data, mode) {
 
 async function renderCardPreview(data) {
   const preview = document.getElementById('result-card-preview');
+  if (!preview) return; // 以前の生成失敗でremove()済みなら何もしない
   preview.innerHTML = '';
   try {
     const canvas = await buildCompatCardCanvas(data, 'x');
@@ -1128,8 +1182,9 @@ async function downloadResultCard(mode) {
   btn.disabled = true;
   try {
     const canvas = await buildCompatCardCanvas(lastResultData, mode);
-    await new Promise((resolve) => {
+    await new Promise((resolve, reject) => {
       canvas.toBlob((blob) => {
+        if (!blob) { reject(new Error('toBlob returned null')); return; }
         const a = document.createElement('a');
         const url = URL.createObjectURL(blob);
         a.href = url;
@@ -1141,7 +1196,7 @@ async function downloadResultCard(mode) {
         resolve();
       }, 'image/png');
     });
-    trackEvent('save_card', { mode });
+    trackEvent('save_card', { quiz_name: 'aisho', card_format: mode });
   } catch (e) {
     console.error('結果カード生成に失敗しました', e);
   } finally {
@@ -1162,14 +1217,15 @@ if (GA_MEASUREMENT_ID && !isLocalDev) {
   gaScript.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
   document.head.appendChild(gaScript);
   window.dataLayer = window.dataLayer || [];
-  function gtag() { dataLayer.push(arguments); }
-  gtag('js', new Date());
-  gtag('config', GA_MEASUREMENT_ID);
+  // ブロック内function宣言はstrict modeだとブロック外から見えないため、windowに明示的に生やす
+  window.gtag = function gtag() { window.dataLayer.push(arguments); };
+  window.gtag('js', new Date());
+  window.gtag('config', GA_MEASUREMENT_ID);
 }
 
 // 効果測定用のカスタムイベント送信(gtag未読み込み時は何もしない、計測失敗が機能を止めないよう安全に呼ぶ)
 function trackEvent(name, params) {
-  if (typeof gtag === 'function') gtag('event', name, params || {});
+  if (typeof window.gtag === 'function') window.gtag('event', name, params || {});
 }
 
 // ===== イベント =====
@@ -1229,6 +1285,12 @@ function applyLangUI() {
   document.getElementById('follow-link-mbti').textContent = t.followLinkMbti;
   document.getElementById('follow-link-kokuyo').textContent = t.followLinkKokuyo;
   document.getElementById('follow-link-lovechar64').textContent = t.followLinkLovechar64;
+  // 上部ナビ(他の診断へのリンク群)もJA/ENで切り替える
+  document.getElementById('site-nav').setAttribute('aria-label', t.siteNavAria);
+  document.getElementById('site-nav-label').textContent = t.siteNavLabel;
+  document.getElementById('site-nav-mbti').textContent = t.siteNavMbti;
+  document.getElementById('site-nav-kokuyo').textContent = t.siteNavKokuyo;
+  document.getElementById('site-nav-lovechar64').textContent = t.siteNavLovechar64;
   document.getElementById('follow-label-3').textContent = t.followLabel3;
   document.getElementById('follow-link-tw-matome').textContent = t.followLinkTwMatome;
   document.getElementById('footer-disclaimer').textContent = t.footerDisclaimer;
@@ -1247,15 +1309,19 @@ function applyLangUI() {
   }
   document.getElementById('footer-affiliate').hidden = LANG === 'en';
 }
-function setLang(lang) {
+// fromUser: ボタン操作時だけtrue(起動時の初期化ではlang_switchを送らない)
+function setLang(lang, fromUser) {
   LANG = lang;
-  document.getElementById('btn-lang-ja').classList.toggle('active', lang === 'ja');
-  document.getElementById('btn-lang-en').classList.toggle('active', lang === 'en');
+  ['ja', 'en'].forEach((l) => {
+    const btn = document.getElementById(`btn-lang-${l}`);
+    btn.classList.toggle('active', lang === l);
+    btn.setAttribute('aria-pressed', String(lang === l));
+  });
   applyLangUI();
-  trackEvent('lang_switch', { lang });
+  if (fromUser) trackEvent('lang_switch', { lang });
 }
-document.getElementById('btn-lang-ja').addEventListener('click', () => setLang('ja'));
-document.getElementById('btn-lang-en').addEventListener('click', () => setLang('en'));
+document.getElementById('btn-lang-ja').addEventListener('click', () => setLang('ja', true));
+document.getElementById('btn-lang-en').addEventListener('click', () => setLang('en', true));
 
 // ===== 起動時: URLパラメータ復元(共有リンク経由のアクセス) =====
 // 関数・状態の宣言が全て済んだ後に実行する必要がある(lastResultData等の let 宣言より前で
@@ -1304,7 +1370,7 @@ document.getElementById('btn-lang-en').addEventListener('click', () => setLang('
       if (you) {
         state.you = you;
         showResult();
-      } else if (/^[A-Z]{4}$/.test(youParam.toUpperCase())) {
+      } else if (/^[EI][SN][TF][JP]$/.test(youParam.toUpperCase())) {
         state.guessedPersonality = youParam.toUpperCase();
         showResult();
       }

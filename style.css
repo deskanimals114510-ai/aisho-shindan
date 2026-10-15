@@ -3,9 +3,13 @@
   --bg2: #f4e9ff;
   --bg3: #fff6e9;
   --card-bg: #ffffff;
-  --primary: #ff8fb3;
-  --primary-dark: #ef6b96;
-  --accent2: #b892ff;
+  /* 2026-10-16: WCAG AA対応でMBTI診断と同じ濃色へ(白文字・白背景上の文字で4.5:1以上)。
+     旧色は装飾用の淡い塗り(アバター下地等)に限って --primary-soft / --accent2-soft で残す */
+  --primary: #c73d70;
+  --primary-dark: #a8305c;
+  --accent2: #7d4fc4;
+  --primary-soft: #ff8fb3;
+  --accent2-soft: #b892ff;
   --accent3: #ffcf7a;
   --mint: #7ed9c9;
   --text: #55404f;
@@ -152,7 +156,7 @@ body {
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.12em;
-  color: var(--primary);
+  color: var(--primary-dark); /* 小さい文字のため淡ピンク背景上でも4.5:1以上になる濃色 */
   margin-bottom: 10px;
 }
 
@@ -468,7 +472,7 @@ body {
   height: 30px;
   flex: none;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary), var(--accent2));
+  background: linear-gradient(135deg, var(--primary-soft), var(--accent2-soft));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -559,7 +563,8 @@ body {
   gap: 16px;
 }
 .result-card {
-  --accent: #b892ff;
+  --accent: #b892ff; /* 枠線(border-top)専用。文字色は --accent-text(script.jsのtextColor)を使う */
+  --accent-text: #6b3fb0;
   background: rgba(255,255,255,0.85);
   backdrop-filter: blur(10px);
   border-radius: 22px;
@@ -583,7 +588,7 @@ body {
 .result-card .cat-name {
   font-size: 0.76rem;
   font-weight: 700;
-  color: var(--accent);
+  color: var(--accent-text);
   margin: 0 0 4px;
 }
 .result-card .type-name {
@@ -624,7 +629,7 @@ body {
 .lucky-label {
   font-size: 0.66rem;
   font-weight: 700;
-  color: #d18b2a;
+  color: #8a5a12;
   letter-spacing: 0.02em;
 }
 .lucky-name {
@@ -634,7 +639,7 @@ body {
 }
 .lucky-arrow {
   font-size: 1.3rem;
-  color: #d18b2a;
+  color: #8a5a12;
   flex: none;
 }
 .result-card-preview {
@@ -687,11 +692,12 @@ body {
 }
 
 .btn-line {
-  background: rgba(6, 199, 85, 0.08);
+  /* 背景のグラデーションが透けると文字のコントラストが4.5:1を切るため、白の土台に薄い緑を重ねる */
+  background: linear-gradient(rgba(6, 199, 85, 0.08), rgba(6, 199, 85, 0.08)), #fff;
   border-color: #06c755;
-  color: #06c755;
+  color: #04742f;
 }
-.btn-line:hover { background: rgba(6, 199, 85, 0.16); }
+.btn-line:hover { background: linear-gradient(rgba(6, 199, 85, 0.16), rgba(6, 199, 85, 0.16)), #fff; }
 
 .follow-links {
   margin-top: 22px;
@@ -782,7 +788,7 @@ body {
   margin-bottom: 6px;
 }
 .code-input:focus { outline: none; border-color: var(--primary); }
-.code-input::placeholder { color: var(--text-sub); opacity: 0.55; font-style: italic; }
+.code-input::placeholder { color: var(--text-sub); opacity: 1; font-style: italic; }
 .code-hint {
   font-size: 0.72rem;
   color: var(--text-sub);
@@ -805,7 +811,7 @@ body {
 .transparency-note { font-size: 0.72rem; color: var(--text-sub); line-height: 1.6; margin: 0; }
 .code-error {
   font-size: 0.78rem;
-  color: #e0507a;
+  color: #b8325a;
   margin: -8px 0 14px;
   display: none;
 }
@@ -860,7 +866,7 @@ body {
   background: #f3eeff;
   color: var(--text-sub);
 }
-.axis-chip.match { background: #e8f7f2; color: #2f9c82; }
+.axis-chip.match { background: #e8f7f2; color: #1e6f5c; }
 
 /* ---- 相性診断: 結果画面 ---- */
 .score-hero {
@@ -945,7 +951,7 @@ body {
   font-family: "Poppins", sans-serif;
   font-size: 1.7rem;
   font-weight: 800;
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .result-card .cat-score .tier {
   font-size: 0.78rem;
@@ -963,7 +969,7 @@ body {
 .reason-block .reason-label {
   font-size: 0.68rem;
   font-weight: 700;
-  color: var(--accent);
+  color: var(--accent-text);
   display: inline-block;
   margin-right: 4px;
 }
@@ -1023,6 +1029,9 @@ body {
   grid-template-columns: repeat(4, 1fr);
   gap: 8px;
 }
+@media (max-width: 375px) {
+  .type-nav-grid { grid-template-columns: repeat(2, 1fr); }
+}
 .type-nav-link {
   display: block;
   text-align: center;
@@ -1036,6 +1045,7 @@ body {
   border-radius: 10px;
   padding: 8px 4px;
 }
+button.type-nav-link { width: 100%; cursor: pointer; line-height: inherit; }
 .type-nav-link.active {
   background: linear-gradient(135deg, var(--primary), var(--accent2));
   color: #fff;

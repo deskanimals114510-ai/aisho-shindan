@@ -6,7 +6,7 @@
 <title>MBTI相性診断 | あなたとお相手の相性を診断</title>
 <meta name="description" content="性格・恋愛・仕事タイプ診断の結果コードから、あなたとお相手の相性を3カテゴリで診断。お相手のコードが無くても4問で推測できます。">
 <meta name="google-site-verification" content="0J0w_U9KWunnJqs_cK5Oh1yQ9owq_4TMpYkJdkPbA4E" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com https://*.google-analytics.com; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.google-analytics.com; base-uri 'self'; form-action 'self';">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; base-uri 'self'; form-action 'self';">
 
 <!-- OGP (Facebook/LINE等) -->
 <meta property="og:type" content="website">
@@ -64,12 +64,12 @@
 
   <!-- スタート画面: コード入力 -->
   <section id="screen-start" class="screen active">
-    <nav class="site-nav" aria-label="Desk Animals Labの診断サイト一覧">
-      <span class="site-nav-label">🐾 他の診断もどうぞ</span>
+    <nav id="site-nav" class="site-nav" aria-label="Desk Animals Labの診断サイト一覧">
+      <span id="site-nav-label" class="site-nav-label">🐾 他の診断もどうぞ</span>
       <div class="site-nav-links">
-        <a class="site-nav-link" href="https://deskanimals114510-ai.github.io/personality-type-quiz/">🔮 性格・恋愛・仕事タイプ診断</a>
-        <a class="site-nav-link" href="https://deskanimals114510-ai.github.io/kokuyo-shindan/">🌙 黒曜診断</a>
-        <a class="site-nav-link" href="https://deskanimals114510-ai.github.io/lovechar64/">💞 恋愛キャラ診断64</a>
+        <a id="site-nav-mbti" class="site-nav-link" href="https://deskanimals114510-ai.github.io/personality-type-quiz/">🔮 性格・恋愛・仕事タイプ診断</a>
+        <a id="site-nav-kokuyo" class="site-nav-link" href="https://deskanimals114510-ai.github.io/kokuyo-shindan/">🌙 黒曜診断</a>
+        <a id="site-nav-lovechar64" class="site-nav-link" href="https://deskanimals114510-ai.github.io/lovechar64/">💞 恋愛キャラ診断64</a>
         <!-- 新しい診断サイトを追加する場合はここに <a class="site-nav-link" href="...">絵文字 サイト名</a> を1行追記 -->
       </div>
     </nav>
@@ -77,8 +77,8 @@
     <div class="start-layout">
     <div class="start-card">
       <div class="lang-toggle">
-        <button id="btn-lang-ja" class="lang-btn active">日本語</button>
-        <button id="btn-lang-en" class="lang-btn">English</button>
+        <button id="btn-lang-ja" class="lang-btn active" aria-pressed="true">日本語</button>
+        <button id="btn-lang-en" class="lang-btn" aria-pressed="false">English</button>
       </div>
       <div class="start-emoji">🔮</div>
       <div class="hero-preview" aria-hidden="true">
@@ -134,7 +134,7 @@
       <span id="guess-eyebrow" class="eyebrow">4 QUESTIONS</span>
       <div id="guess-title" class="guess-title">お相手について<br>教えてください</div>
       <p id="guess-lead">直感で選んでOKです。すべて答えると診断に進みます。</p>
-      <div class="progress-bar" id="guess-progress-bar"><div class="progress-fill" id="guess-progress-fill"></div></div>
+      <div class="progress-bar" id="guess-progress-bar" role="progressbar" aria-label="質問の進み具合" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-fill" id="guess-progress-fill"></div></div>
       <span class="progress-text" id="guess-progress-text"></span>
     </div>
     <div id="guess-questions"></div>
@@ -190,6 +190,7 @@
     <p id="footer-privacy">本診断は名前・生年月日等の個人情報の入力を求めません。入力した結果コードはお使いの端末内で処理され、サーバーへの送信・保存は一切行いません。なお、アクセス解析(Googleアナリティクス)は行っており、閲覧したページの情報が計測されます。計測にはCookieを使用します。商品リンクのリンク先(Amazon)などの第三者がCookieを設定・取得する場合があります。また、Google Fontsの読み込み時にお使いのIPアドレスがGoogleに送信されます。</p>
     <p><a href="pairs/" style="color:var(--text-sub);">相性10パターン一覧を見る</a></p>
     <p><a href="gogyo.html" style="color:var(--text-sub);">黒曜診断の五行相性チェックはこちら</a></p>
+    <p><a href="https://deskanimals114510-ai.github.io/" style="color:var(--text-sub);">Desk Animals Lab(診断・ツール一覧)</a></p>
   </footer>
 
 </main>

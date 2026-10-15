@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title id="page-title">黒曜診断 五行相性チェック | 相性診断</title>
 <meta id="meta-description" name="description" content="黒曜診断の日主(生まれた日の干)から、あなたとお相手の五行の相性を無料でチェック。木・火・土・金・水、五行の相生相剋で相性を診断します。">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com https://*.google-analytics.com; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.google-analytics.com; base-uri 'self'; form-action 'self';">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; base-uri 'self'; form-action 'self';">
 <meta property="og:type" content="website">
 <meta id="og-title" property="og:title" content="黒曜診断 五行相性チェック | 相性診断">
 <meta id="og-description" property="og:description" content="黒曜診断の日主(生まれた日の干)から、あなたとお相手の五行の相性を無料でチェック。木・火・土・金・水、五行の相生相剋で相性を診断します。">
@@ -44,8 +44,8 @@
   <section class="screen active type-page">
     <div class="result-header">
       <div class="lang-toggle">
-        <button id="btn-lang-ja" class="lang-btn active">日本語</button>
-        <button id="btn-lang-en" class="lang-btn">English</button>
+        <button id="btn-lang-ja" class="lang-btn active" aria-pressed="true">日本語</button>
+        <button id="btn-lang-en" class="lang-btn" aria-pressed="false">English</button>
       </div>
       <span id="eyebrow" class="eyebrow">COMPATIBILITY GUIDE</span>
       <h1 id="page-h1" class="result-title">黒曜診断 <span class="grad-text">五行相性</span>チェック</h1>
@@ -249,16 +249,19 @@ function renderGrid(containerId, onSelect, getSelected) {
   el.innerHTML = '';
   const dayMasters = getDayMasters();
   dayMasters.forEach((dm, i) => {
-    const btn = document.createElement('a');
+    // 2026-10-16: 選択操作なので<a href="#">ではなくbutton+aria-pressedで状態を伝える
+    const btn = document.createElement('button');
+    btn.type = 'button';
     btn.className = 'type-nav-link';
-    btn.href = '#';
     btn.textContent = dmLabel(dm);
-    if (getSelected() === i) btn.classList.add('active');
+    const selected = getSelected() === i;
+    btn.classList.toggle('active', selected);
+    btn.setAttribute('aria-pressed', String(selected));
     btn.dataset.index = i;
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      [...el.children].forEach(c => c.classList.remove('active'));
+    btn.addEventListener('click', () => {
+      [...el.children].forEach(c => { c.classList.remove('active'); c.setAttribute('aria-pressed', 'false'); });
       btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
       onSelect(i);
     });
     el.appendChild(btn);
@@ -329,6 +332,8 @@ function setLang(lang) {
   LANG = lang;
   document.getElementById('btn-lang-ja').classList.toggle('active', lang === 'ja');
   document.getElementById('btn-lang-en').classList.toggle('active', lang === 'en');
+  document.getElementById('btn-lang-ja').setAttribute('aria-pressed', String(lang === 'ja'));
+  document.getElementById('btn-lang-en').setAttribute('aria-pressed', String(lang === 'en'));
   applyLangUI();
 }
 document.getElementById('btn-lang-ja').addEventListener('click', () => setLang('ja'));
